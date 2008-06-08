@@ -55,9 +55,7 @@ void step::serialise(FILE* file)
 stepSequence::stepSequence()
 	{
 	//fprintf(stderr,"DEBUG: stepSequence::stepSequence() - Creating stepSequence\n");
-	
-	//TODO: should handle this with a define probably
-	maxSteps=128;	
+		
 	
 	sequenceName=QString("Default Sequence Name");
 	sequenceType=QString("synth part");
@@ -69,9 +67,9 @@ stepSequence::stepSequence()
 	drumNote=0;
 	
 	//fill our sequence with steps
-	for (int i=0;i<maxSteps;i++)
+	for (int i=0;i<MAX_STEPS;i++)
 		{
-		stepArray[i]=new step(0,40,1,64);
+		stepArray[i]=new step(0,40,1,64); //default - E2, 1 step length, 64 velocity
 		}
 
 	}
@@ -79,7 +77,7 @@ stepSequence::stepSequence()
 stepSequence::~stepSequence()
 	{
 	//destructor
-	for (int i=0;i<maxSteps;i++)
+	for (int i=0;i<MAX_STEPS;i++)
 		{
 		if (stepArray[i])
 			{
@@ -150,8 +148,8 @@ void stepSequence::setSequenceLength(int steps)
 
 void stepSequence::serialise(FILE* file)
 	{
-	fprintf(file,"sequence:%s|%s|%d|%d|%d|%d|%d|%d\n",sequenceName.ascii(),sequenceType.ascii(),maxSteps,muted,selectedStep,midiChannel,drumSequence,drumNote);
-	for (int i=0;i<maxSteps;i++)
+	fprintf(file,"sequence:%s|%s|%d|%d|%d|%d|%d\n",sequenceName.ascii(),sequenceType.ascii(),muted,selectedStep,midiChannel,drumSequence,drumNote);
+	for (int i=0;i<MAX_STEPS;i++)
 		{
 		stepArray[i]->serialise(file);
 		}
@@ -170,7 +168,7 @@ stepPattern::stepPattern()
 	patternTempo=120; //initial default tempo
 	
 	//clear out our sequence array.
-	for (int i=0;i<maxSequences;i++)
+	for (int i=0;i<MAX_SEQUENCES;i++)
 		{
 		sequences[i]=NULL;
 		}
@@ -183,7 +181,7 @@ stepPattern::~stepPattern()
 	}
 void stepPattern::serialise(FILE* file)
 	{
-	fprintf(file,"pattern:%d|%d|%d|%d|%d\n",maxSequences,currentStepIndex,patternSteps,patternTempo,drumAccentSequence);
+	fprintf(file,"pattern:%d|%d|%d|%d\n",currentStepIndex,patternSteps,patternTempo,drumAccentSequence);
 	for (int i=0;i<MAX_SEQUENCES;i++)
 		{
 		if (sequences[i])
