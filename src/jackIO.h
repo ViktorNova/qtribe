@@ -58,7 +58,6 @@ double getJackTime();
 int initJACK();
 int disconnectJACK();
 
-double get_time();
-double get_delta_time();
+
 
 #endif //_JACKIO_H_
