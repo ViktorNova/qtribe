@@ -380,37 +380,3 @@ int disconnectJACK()
 	return 0;
 	}
 
-double get_time()
-	{
-	double		seconds;
-	int		retval;
-	struct timeval	tv;
-
-	retval = gettimeofday(&tv, NULL);
-
-	if (retval) 
-		{
-		fprintf(stderr,"EPIC FAIL: Error calling gettimeofday.");
-		exit(1);
-		}
-	seconds = tv.tv_sec + tv.tv_usec / 1000000.0;
-	return seconds;
-	}
-
-double get_delta_time()
-	{
-	static double	previously = -1.0;
-	double		now;
-	double		delta;
-
-	now = get_time();
-
-	if (previously == -1.0) 
-		{
-		previously = now;
-		return 0;
-		}
-	delta = now - previously;
-	previously = now;
-	return delta;
-}
