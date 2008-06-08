@@ -28,6 +28,9 @@
 #include "stepsequencerwidget.h"
 #include "jackIO.h"
 
+#ifndef DEFAULT_BANK_DIR
+#define DEFAULT_BANK_DIR "/usr/share/qtribe"
+#endif
 
 qTribe::qTribe()
     : QMainWindow( 0, appName, WDestructiveClose )
@@ -39,9 +42,27 @@ qTribe::qTribe()
         sequencerThread->initSequencer();       
         QString file("qtribe.bank");
         QString homePath=QDir::homeDirPath()+QDir::separator()+file;
-        fprintf(stdout,"Loading Bankfile from path: %s\n",homePath.ascii());
-        sequencerThread->loadBank((char*)homePath.ascii());
-        
+        QString defaultPath=DEFAULT_BANK_DIR+QDir::separator()+file;
+
+	//check if our bankfile exists here
+	if (QFile::exists(homePath))
+		{
+		fprintf(stdout,"Loading Bankfile from path: %s\n",homePath.ascii());
+        	sequencerThread->loadBank((char*)homePath.ascii());
+		}
+	else if (QFile::exists(defaultPath))
+		{
+		fprintf(stdout,"Loading Bankfile from path: %s\n",defaultPath.ascii());
+        	sequencerThread->loadBank((char*)defaultPath.ascii());
+		}
+	//if not see if we can load it from /usr/share/qtribe/
+	else
+		{
+		fprintf(stdout,"Creating new Bankfile\n");
+		sequencerThread->createBank();
+		}
+	
+	
         stepsequencerWidget* sequencerUI=new stepsequencerWidget( this );
         sequencerUI->setBankFile((char*)homePath.ascii());
         
