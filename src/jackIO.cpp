@@ -169,10 +169,8 @@ double getJackTime()
 
 void process_midi_output(jack_nframes_t nframes)
 	{
-	//TODO: remove the fprintfs from this function, as they could trigger unwanted xruns.
-	
 	int read, t;
-	
+	bool looped=false;
 	unsigned char* buffer;
 	
 	void* port_buffer;
@@ -180,7 +178,6 @@ void process_midi_output(jack_nframes_t nframes)
 	jack_nframes_t last_frame_time;
 	
 	struct midiMessage ev;
-
 	
 	//the last frame # that JACK played.
 	last_frame_time = jack_last_frame_time(jackClientObject);
@@ -197,17 +194,12 @@ void process_midi_output(jack_nframes_t nframes)
 	//if theres anything in the port_buffer (there shouldnt be?), destroy it.
 	jack_midi_clear_buffer(port_buffer);
 
-	/* We may push at most one byte per 0.32ms to stay below 31.25 Kbaud limit.  - only true for legacy hardware?*/
-	//bytes_remaining = nframes_to_ms(nframes) * rateLimit;
-
-	//we need to loop over the midiEvents we have queued in the JACK ring buffer
-	//fprintf(stderr,"calling process_midi_output_ at nframes: %d\n",last_frame_time+nframes);
-	int looped=0;
 	jack_nframes_t first_message_in_buffer=0;
 	
-	while (jack_ringbuffer_read_space(jackBuffer) && looped==0) 
+	while (jack_ringbuffer_read_space(jackBuffer) && ! looped) 
 		{
 		//fprintf(stderr,"in process_midi_output\n");
+		
 		//Check we have a complete event sitting in our JACK buffer
 		read = jack_ringbuffer_peek(jackBuffer, (char *)&ev, sizeof(ev));
 
@@ -222,29 +214,23 @@ void process_midi_output(jack_nframes_t nframes)
 		if (first_message_in_buffer==ev.timestamp)
 			{
 			//fprintf(stderr,"looped, breaking\n");
-			looped=1;
+			
+			looped=true;
 			break;
 			}
 		
-		//bytes_remaining -= ev.length;
-
-		//if (rateLimit > 0.0 && bytes_remaining <= 0) 
-		//		{
-		//	fprintf(stderr,"WARNING: Rate limiting in effect\n");
-		//	break;
-		//	}
-		
 		//figure out at what time the last byte in the buffer will be played
 		t = ev.timestamp + nframes - last_frame_time;
-		//fprintf(stderr,"ev.timestamp: %d, last_frame_time: %d\n",ev.timestamp,last_frame_time);
-		/* If computed time is too much into the future, we'll need
-		   to send it later. */
+		
+		/* If computed time is too much into the future, we'll need to send it later. 
+		We do this by appending events to the end of the ringbuffer*/
+		
 		if (t >= (int)nframes)
 			{
-			//fprintf(stderr,"Event in future! t %d ev.timestamp %d nframes %d lasT_frame_time %d \n",t,ev.timestamp,nframes,last_frame_time);
 			jack_ringbuffer_read_advance(jackBuffer, sizeof(ev));
 			if (! first_message_in_buffer)
 				{
+				//we need to watch for events we have seen before or we will loop infintely.
 				first_message_in_buffer=ev.timestamp;
 				}
 			//tack our future event onto the end of our ringbuffer for future processing.
@@ -257,20 +243,12 @@ void process_midi_output(jack_nframes_t nframes)
 			if (t < 0)
 				t = 0;
 
-			//TODO: not sure what this does - remove?
-			//if (time_offsets_are_zero)
-			//	t = 0;
-		
 			//pull our event out of our JACK buffer
-			//fprintf(stderr,"Advancing to next event in buffer\n");
 			jack_ringbuffer_read_advance(jackBuffer, sizeof(ev));
 		
-
 			//ensure we have space to write our event into the JACK output port
 			buffer = jack_midi_event_reserve(port_buffer, t, ev.length);
 			
-			//
-				
 			if (buffer == NULL) 
 				{
 				fprintf(stderr,"t %d, ev.timestamp: %d, last_frame_time: %d\n",t,ev.timestamp,last_frame_time);
@@ -279,7 +257,6 @@ void process_midi_output(jack_nframes_t nframes)
 				}
 
 			//do the actual memcopy to send the event to JACK.
-			//fprintf(stderr,"Sending midi event\n");
 			memcpy(buffer, ev.midiData, ev.length);
 			}
 		}
