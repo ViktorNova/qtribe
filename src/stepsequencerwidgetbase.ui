@@ -8,8 +8,8 @@
         <rect>
             <x>0</x>
             <y>0</y>
-            <width>965</width>
-            <height>609</height>
+            <width>650</width>
+            <height>427</height>
         </rect>
     </property>
     <property name="caption">
@@ -19,12 +19,18 @@
         <property name="name">
             <cstring>unnamed</cstring>
         </property>
+        <property name="margin">
+            <number>0</number>
+        </property>
+        <property name="spacing">
+            <number>0</number>
+        </property>
         <widget class="QFrame">
             <property name="name">
                 <cstring>frame4</cstring>
             </property>
             <property name="frameShape">
-                <enum>StyledPanel</enum>
+                <enum>NoFrame</enum>
             </property>
             <property name="frameShadow">
                 <enum>Raised</enum>
@@ -33,12 +39,18 @@
                 <property name="name">
                     <cstring>unnamed</cstring>
                 </property>
+                <property name="margin">
+                    <number>0</number>
+                </property>
+                <property name="spacing">
+                    <number>0</number>
+                </property>
                 <widget class="QFrame">
                     <property name="name">
                         <cstring>frame5_2</cstring>
                     </property>
                     <property name="frameShape">
-                        <enum>StyledPanel</enum>
+                        <enum>NoFrame</enum>
                     </property>
                     <property name="frameShadow">
                         <enum>Raised</enum>
@@ -46,6 +58,12 @@
                     <vbox>
                         <property name="name">
                             <cstring>unnamed</cstring>
+                        </property>
+                        <property name="margin">
+                            <number>0</number>
+                        </property>
+                        <property name="spacing">
+                            <number>0</number>
                         </property>
                         <widget class="QFrame">
                             <property name="name">
@@ -109,7 +127,7 @@
                         </sizepolicy>
                     </property>
                     <property name="frameShape">
-                        <enum>StyledPanel</enum>
+                        <enum>NoFrame</enum>
                     </property>
                     <property name="frameShadow">
                         <enum>Raised</enum>
@@ -117,6 +135,12 @@
                     <vbox>
                         <property name="name">
                             <cstring>unnamed</cstring>
+                        </property>
+                        <property name="margin">
+                            <number>0</number>
+                        </property>
+                        <property name="spacing">
+                            <number>0</number>
                         </property>
                         <widget class="QToolButton">
                             <property name="name">
@@ -163,6 +187,9 @@
                                         <property name="name">
                                             <cstring>unnamed</cstring>
                                         </property>
+                                        <property name="spacing">
+                                            <number>0</number>
+                                        </property>
                                         <widget class="QRadioButton">
                                             <property name="name">
                                                 <cstring>radioButton3</cstring>
@@ -193,10 +220,10 @@
                                                 <cstring>radioButton22</cstring>
                                             </property>
                                             <property name="text">
-                                                <string>length</string>
+                                                <string>&amp;length</string>
                                             </property>
                                             <property name="accel">
-                                                <string></string>
+                                                <string>Alt+L</string>
                                             </property>
                                             <property name="checked">
                                                 <bool>true</bool>
@@ -224,15 +251,18 @@
                                         <property name="name">
                                             <cstring>unnamed</cstring>
                                         </property>
+                                        <property name="spacing">
+                                            <number>0</number>
+                                        </property>
                                         <widget class="QRadioButton">
                                             <property name="name">
                                                 <cstring>note</cstring>
                                             </property>
                                             <property name="text">
-                                                <string>on/off</string>
+                                                <string>&amp;on/off</string>
                                             </property>
                                             <property name="accel">
-                                                <string></string>
+                                                <string>Alt+O</string>
                                             </property>
                                             <property name="checked">
                                                 <bool>true</bool>
@@ -327,6 +357,12 @@
                                     <property name="name">
                                         <cstring>dataDial</cstring>
                                     </property>
+                                    <property name="minimumSize">
+                                        <size>
+                                            <width>100</width>
+                                            <height>100</height>
+                                        </size>
+                                    </property>
                                     <property name="wrapping">
                                         <bool>true</bool>
                                     </property>
@@ -357,7 +393,7 @@
                 <cstring>frame9</cstring>
             </property>
             <property name="frameShape">
-                <enum>StyledPanel</enum>
+                <enum>NoFrame</enum>
             </property>
             <property name="frameShadow">
                 <enum>Raised</enum>
@@ -365,6 +401,9 @@
             <hbox>
                 <property name="name">
                     <cstring>unnamed</cstring>
+                </property>
+                <property name="margin">
+                    <number>0</number>
                 </property>
                 <widget class="QButtonGroup">
                     <property name="name">
@@ -641,7 +680,7 @@
                 <cstring>frame5</cstring>
             </property>
             <property name="frameShape">
-                <enum>StyledPanel</enum>
+                <enum>NoFrame</enum>
             </property>
             <property name="frameShadow">
                 <enum>Raised</enum>
@@ -650,19 +689,28 @@
                 <property name="name">
                     <cstring>unnamed</cstring>
                 </property>
+                <property name="margin">
+                    <number>0</number>
+                </property>
+                <property name="spacing">
+                    <number>0</number>
+                </property>
                 <widget class="QFrame">
                     <property name="name">
                         <cstring>frame10</cstring>
                     </property>
                     <property name="frameShape">
-                        <enum>StyledPanel</enum>
+                        <enum>NoFrame</enum>
                     </property>
                     <property name="frameShadow">
-                        <enum>Raised</enum>
+                        <enum>Plain</enum>
                     </property>
                     <hbox>
                         <property name="name">
                             <cstring>unnamed</cstring>
+                        </property>
+                        <property name="margin">
+                            <number>0</number>
                         </property>
                         <widget class="QFrame">
                             <property name="name">
@@ -682,6 +730,9 @@
                                     <property name="name">
                                         <cstring>playPositionGroup</cstring>
                                     </property>
+                                    <property name="frameShape">
+                                        <enum>NoFrame</enum>
+                                    </property>
                                     <property name="lineWidth">
                                         <number>1</number>
                                     </property>
@@ -694,6 +745,12 @@
                                     <hbox>
                                         <property name="name">
                                             <cstring>unnamed</cstring>
+                                        </property>
+                                        <property name="margin">
+                                            <number>0</number>
+                                        </property>
+                                        <property name="spacing">
+                                            <number>0</number>
                                         </property>
                                         <widget class="QRadioButton">
                                             <property name="name">
@@ -792,6 +849,9 @@
                                     <property name="name">
                                         <cstring>editPositionGroup</cstring>
                                     </property>
+                                    <property name="frameShape">
+                                        <enum>NoFrame</enum>
+                                    </property>
                                     <property name="title">
                                         <string>editPosition</string>
                                     </property>
@@ -801,6 +861,12 @@
                                     <hbox>
                                         <property name="name">
                                             <cstring>unnamed</cstring>
+                                        </property>
+                                        <property name="margin">
+                                            <number>0</number>
+                                        </property>
+                                        <property name="spacing">
+                                            <number>0</number>
                                         </property>
                                         <widget class="QRadioButton">
                                             <property name="name">
@@ -910,7 +976,7 @@
                                 </sizepolicy>
                             </property>
                             <property name="frameShape">
-                                <enum>StyledPanel</enum>
+                                <enum>NoFrame</enum>
                             </property>
                             <property name="frameShadow">
                                 <enum>Raised</enum>
@@ -928,7 +994,7 @@
                                     </rect>
                                 </property>
                                 <property name="text">
-                                    <string>mute</string>
+                                    <string>&amp;mute</string>
                                 </property>
                             </widget>
                         </widget>
@@ -937,6 +1003,9 @@
                 <widget class="QButtonGroup">
                     <property name="name">
                         <cstring>sequenceGroup</cstring>
+                    </property>
+                    <property name="frameShape">
+                        <enum>GroupBoxPanel</enum>
                     </property>
                     <property name="title">
                         <string>sequence</string>
