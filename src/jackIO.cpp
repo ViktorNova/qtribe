@@ -103,7 +103,7 @@ void queue_message(double ms,int c,int b0, int b1, int b2)
 		}
 	else
 		{
-		fprintf(stderr,"DEBUG: %d %d %d %d %d\n",ms,c,b0,b1,b2);
+		fprintf(stderr,"DEBUG: %f %d %d %d %d\n",ms,c,b0,b1,b2);
 		}
 	
 	}
@@ -171,7 +171,7 @@ void process_midi_output(jack_nframes_t nframes)
 	{
 	//TODO: remove the fprintfs from this function, as they could trigger unwanted xruns.
 	
-	int read, t, bytes_remaining;
+	int read, t;
 	
 	unsigned char* buffer;
 	
@@ -289,25 +289,25 @@ void process_midi_output(jack_nframes_t nframes)
 
 int jack_processCallback (jack_nframes_t nframes, void* arg)
 	{
-  	process_midi_output(nframes);			   
+	process_midi_output(nframes);			   
   	return 0;      
 	}
 
 int jack_setSampleRate (jack_nframes_t nframes, void *arg)
 	{
-  	fprintf (stderr,"JACK: the sample rate is now %lu/sec\n", nframes);
+	fprintf (stderr,"JACK: the sample rate is now %lu/sec\n", (long)nframes);
   	sampleRate=nframes;
   	return 0;
 	}
 
 void jack_errorCallback (const char* desc)
 	{
-  	fprintf (stderr, "ERROR (JACK): %s\n", desc);
+	fprintf (stderr, "ERROR (JACK): %s\n", desc);
 	}
 
 void jack_shutdown (void* arg)
 	{
-  	fprintf(stderr,"Got JACK shutdown signal!");
+	fprintf(stderr,"Got JACK shutdown signal!");
 	//exit(1);
 	}
 
@@ -343,7 +343,7 @@ int initJACK()
 		sampleRate=jack_get_sample_rate (jackClientObject);
 		
 		//Notify user of sample rate
-		fprintf (stderr,"JACK: engine sample rate: %lu\n",sampleRate);
+		fprintf (stderr,"JACK: engine sample rate: %lu\n",(long)sampleRate);
 		
 		//Attempt to register a MIDI port for output
 		jackOut=jack_port_register(jackClientObject,"stepsequencer_out",JACK_DEFAULT_MIDI_TYPE,JackPortIsOutput,bufferSize);
