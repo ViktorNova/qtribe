@@ -29,16 +29,16 @@ class sequencerCore : public QThread
 	{
 	
 	public:
-        	virtual void run();
-		void cleanup();
+        	
 		void initSequencer();
+		
+		virtual void run();
+		void cleanup();
 		void setPattern(int i);
+		
 		stepPattern* getCurrentPattern();
 		int getCurrentPatternIndex();
 		
-		//pass a stepsequenceWidget* for step update callback
-		void setStepHandler(void*);
-
 		void playSequence();
 		void stopSequence();
 
@@ -49,15 +49,16 @@ class sequencerCore : public QThread
 		sequencerCore();
 		~sequencerCore();
 	private:
+		stepPattern* patterns[16];
+		
+		stepPattern* myPattern;	
+		int myPatternNumber;
+		
 		stepPattern* createBlankPattern();
-		QMutex patternMutex;
+		
 		int playing;
 		int alive;
 		int sequenceId;
-		void* stepHandler;
-		stepPattern* myPattern;
-		int myPatternNumber;
-		stepPattern* patterns[16];
 
 	};
 
