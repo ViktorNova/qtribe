@@ -58,10 +58,6 @@ sequencerCore::~sequencerCore()
 	//destructor
 	}
 
-void sequencerCore::setStepHandler(void* w)
-	{
-	stepHandler=w;
-	}
 
 void sequencerCore::cleanup()
 	{	
@@ -256,8 +252,8 @@ void sequencerCore::loadBank(char* fileName)
 		patterns[i]=NULL;
 		}
 	myPattern=NULL;
-	stepPattern* currentPattern;
-	stepSequence* currentSequence;	
+	stepPattern* currentPattern=NULL;
+	stepSequence* currentSequence=NULL;	
 	step* currentStep;
 	int currentStepIndex=0;
 	int patternLength=0;
