@@ -234,6 +234,15 @@ void sequencerCore::saveBank(char* fileName)
 	}
 
 
+void sequencerCore::createBank()
+	{
+	for (int i=0;i<16;i++)
+		{
+		patterns[i]=createBlankPattern();
+		}
+	}
+
+
 void sequencerCore::loadBank(char* fileName)
 	{
 	std::ifstream fin(fileName);
