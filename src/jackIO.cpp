@@ -29,11 +29,6 @@ jack_nframes_t sampleRate;
 
 int backendInitialised=0;
 
-//MIDI output requires rate limiting?
-double rateLimit=0.0;
-int time_offsets_are_zero=0;
-
-
 int midiChannel=0;
 //default buffersize
 int bufferSize=1024*sizeof(struct midiMessage);
