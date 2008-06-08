@@ -116,7 +116,8 @@ class stepPattern
 
 		void setGlobalTempo(int);
 		void setPatternTempo(int);
-
+		
+		//TODO: Should really be a sequence attribute
 		void setDrumAccentSequence(int);
 		stepSequence* getDrumAccentSequence();
 
@@ -134,4 +135,3 @@ class stepPattern
 	};
 
 #endif
-
