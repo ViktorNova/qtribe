@@ -94,6 +94,7 @@ void qTribe::closeEvent(QCloseEvent* e)
         sequencerThread->cleanup();
         //fprintf(stderr,"Got close event!\n");
         disconnectJACK();
+	e->accept();
 	exit(0);
 	}
 
