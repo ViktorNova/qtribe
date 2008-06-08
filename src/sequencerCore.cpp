@@ -271,23 +271,23 @@ void sequencerCore::loadBank(char* fileName)
 			patterns[currentPatternIndex]=currentPattern;
 			currentPatternIndex++;
 			QStringList data = QStringList::split( "|", parts[1] );
-			//maxSequences,currentStepIndex,patternSteps,patternTempo,drumAccentSequence
-			patternLength=atoi(data[2]);
-			currentPattern->setPatternTempo(atoi(data[3]));
-			currentPattern->setDrumAccentSequence(atoi(data[4]));
+			//currentStepIndex,patternSteps,patternTempo,drumAccentSequence
+			patternLength=atoi(data[1]);
+			currentPattern->setPatternTempo(atoi(data[2]));
+			currentPattern->setDrumAccentSequence(atoi(data[3]));
 			}
 		if (parts[0]=="sequence")
 			{
 			//fprintf(stderr,"FOUND SEQUENCE\n");
 			QStringList data = QStringList::split( "|", parts[1] );
-			//sequenceName.ascii(),sequenceType.ascii(),maxSteps,muted,selectedStep,midiChannel,drumSequence,drumNote
+			//sequenceName.ascii(),sequenceType.ascii(),muted,selectedStep,midiChannel,drumSequence,drumNote
 
 			//type, name, drumnote
-			int seqindex=currentPattern->addSequence(data[0],data[1],atoi(data[7]));
+			int seqindex=currentPattern->addSequence(data[0],data[1],atoi(data[6]));
 			currentSequence=currentPattern->getSequence(seqindex);
-			currentSequence->setMuted(atoi(data[3]));
+			currentSequence->setMuted(atoi(data[2]));
 			
-			currentSequence->setMidiChannel(atoi(data[5]));
+			currentSequence->setMidiChannel(atoi(data[4]));
 			if (seqindex==1)
 				{
 				currentPattern->setActiveSequence(seqindex);
