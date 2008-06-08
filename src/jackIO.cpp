@@ -187,6 +187,13 @@ void process_midi_output(jack_nframes_t nframes)
 		}
 	
 	//if theres anything in the port_buffer (there shouldnt be?), destroy it.
+
+	#ifdef OLD_JACK
+	jack_midi_clear_buffer(port_buffer, nframes);
+	#else
+	jack_midi_clear_buffer(port_buffer);
+	#endif
+
 	jack_midi_clear_buffer(port_buffer);
 
 	jack_nframes_t first_message_in_buffer=0;
@@ -242,7 +249,12 @@ void process_midi_output(jack_nframes_t nframes)
 			jack_ringbuffer_read_advance(jackBuffer, sizeof(ev));
 		
 			//ensure we have space to write our event into the JACK output port
+			#ifdef OLD_JACK
+			buffer = jack_midi_event_reserve(port_buffer, t, ev.length,nframes);
+			#else
 			buffer = jack_midi_event_reserve(port_buffer, t, ev.length);
+			#endif
+			
 			
 			if (buffer == NULL) 
 				{
