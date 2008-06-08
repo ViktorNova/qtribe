@@ -350,7 +350,7 @@
                                         <enum>Raised</enum>
                                     </property>
                                     <property name="text">
-                                        <string>kTribe</string>
+                                        <string>qTribe</string>
                                     </property>
                                 </widget>
                                 <widget class="QDial">
