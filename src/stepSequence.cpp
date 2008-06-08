@@ -54,7 +54,6 @@ void step::serialise(FILE* file)
 
 stepSequence::stepSequence()
 	{
-	//constructor
 	//fprintf(stderr,"DEBUG: stepSequence::stepSequence() - Creating stepSequence\n");
 	
 	//TODO: should handle this with a define probably
@@ -64,7 +63,6 @@ stepSequence::stepSequence()
 	sequenceType=QString("synth part");
 	
 	muted=0;
-
 	midiChannel=0;		
 	selectedStep=-1;
 	drumSequence=0;
@@ -134,13 +132,13 @@ int stepSequence::getMuted()
 
 void stepSequence::setSequenceName(const char* name)
 	{
-	//TODO: using QString for brain-dead simplicity, but maybe use a char* imp.
+	//TODO: using QString for brain-dead simplicity, but maybe use a char* for non-Qt portability.
 	sequenceName=name;
 	}
 
 void stepSequence::setSequenceType(const char* type)
 	{
-	//TODO: using QString for brain-dead simplicity, but maybe use a char* imp.
+	//TODO: using QString for brain-dead simplicity, but maybe use a char* for non-Qt portability.
 	sequenceType=type;
 	}
 
@@ -165,12 +163,11 @@ stepPattern::stepPattern()
 	//the stepPattern is our main building block
 	//this is a container for all the sequenced tracks - synth lines, chords and drums.
 	
-	//TODO - should use #defines here i guess.
-	maxSequences=16;
 	currentStepIndex=0;
-	patternSteps=16;
-	globalTempo=0;
-	patternTempo=120;
+	
+	patternSteps=16; //initial default length
+	globalTempo=0; //TODO: implement global tempo locking
+	patternTempo=120; //initial default tempo
 	
 	//clear out our sequence array.
 	for (int i=0;i<maxSequences;i++)
@@ -187,7 +184,7 @@ stepPattern::~stepPattern()
 void stepPattern::serialise(FILE* file)
 	{
 	fprintf(file,"pattern:%d|%d|%d|%d|%d\n",maxSequences,currentStepIndex,patternSteps,patternTempo,drumAccentSequence);
-	for (int i=0;i<maxSequences;i++)
+	for (int i=0;i<MAX_SEQUENCES;i++)
 		{
 		if (sequences[i])
 			{	
@@ -252,7 +249,7 @@ void stepPattern::setPatternLength(int steps)
 	patternSteps=steps;
 	//not sure if i need to do this, but probably useful for copying existing notes when
 	//extending pattern length
-	for (int i=0;i<maxSequences;i++)
+	for (int i=0;i<MAX_SEQUENCES;i++)
 		{
 		stepSequence* s=sequences[i];
 		if (s)
@@ -266,7 +263,7 @@ void stepPattern::setPatternLength(int steps)
 int stepPattern::nextFreeId()
 	{
 	//returns 'human' sequence ID - from 1 to 16, 0 for error.
-	for (int i=0;i < maxSequences;i++)
+	for (int i=0;i < MAX_SEQUENCES;i++)
 		{
 		if (! sequences[i])
 			{
@@ -278,7 +275,7 @@ int stepPattern::nextFreeId()
 
 int stepPattern::nextAssignedId()
 	{
-	for (int i=0;i < maxSequences;i++)
+	for (int i=0;i < MAX_SEQUENCES;i++)
 		{
 		if ( sequences[i])
 			{
@@ -360,7 +357,7 @@ stepSequence* stepPattern::getSequence(int sequenceId)
 	{
 	unsigned int seq_array_index=sequenceId-1;
 	//fprintf(stderr,"DEBUG: stepPattern::getSequence  getting Sequence %d\n",sequenceId);
-	if (sequences[seq_array_index] != NULL && sequenceId <= 16)
+	if (sequences[seq_array_index] != NULL && sequenceId <= MAX_SEQUENCES)
 		{return sequences[seq_array_index];}
 	else
 		{
