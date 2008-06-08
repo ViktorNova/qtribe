@@ -1,3 +1,8 @@
+
+#uncomment this if you are using an older version of JACK
+#DEFINES +=OLD_JACK
+
+
 SOURCES += qtribe.cpp \
            main.cpp \
  jackIO.cpp \
