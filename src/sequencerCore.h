@@ -42,7 +42,7 @@ class sequencerCore : public QThread
 		void playSequence();
 		void stopSequence();
 
-		
+		void createBank();
 		void loadBank(char*);
 		void saveBank(char*);
 
