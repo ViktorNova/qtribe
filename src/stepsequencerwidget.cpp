@@ -190,7 +190,7 @@ void stepsequencerWidget::dataDial_valueChanged(int dataVal)
 		
 		if (patternMode==0)
 			{
-			int modDataVal=(dataVal+9)/8.5;
+			int modDataVal=(dataVal+9)/9;
 			dataDisplay->setText(QString("P%1").arg(modDataVal));
 			if (playing)
 				{
@@ -212,7 +212,7 @@ void stepsequencerWidget::dataDial_valueChanged(int dataVal)
 		if (patternMode==1)
 			{
 			
-			int modDataVal=(dataVal+9)/8.5;
+			int modDataVal=(dataVal+9)/9;
 			//fprintf(stderr,"Setting MIDI Channel %d orig %d\n",modDataVal,dataVal);
 			stepPattern* myPattern=mySequencerThread->getCurrentPattern();
 			stepSequence* mySequence=myPattern->getActiveSequence();

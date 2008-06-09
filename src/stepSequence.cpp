@@ -373,3 +373,13 @@ stepSequence* stepPattern::getDrumAccentSequence()
 	{
 	return getSequence(drumAccentSequence);
 	}
+
+stepPatternChain::stepPatternChain()
+	{
+
+	}
+
+stepPatternChain::~stepPatternChain()
+	{
+
+	}

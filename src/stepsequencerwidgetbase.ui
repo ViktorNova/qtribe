@@ -8,8 +8,8 @@
         <rect>
             <x>0</x>
             <y>0</y>
-            <width>670</width>
-            <height>453</height>
+            <width>849</width>
+            <height>476</height>
         </rect>
     </property>
     <property name="caption">
@@ -287,6 +287,46 @@
                                             </property>
                                             <property name="text">
                                                 <string>velocit&amp;y</string>
+                                            </property>
+                                        </widget>
+                                    </vbox>
+                                </widget>
+                                <widget class="QButtonGroup">
+                                    <property name="name">
+                                        <cstring>chainGroup</cstring>
+                                    </property>
+                                    <property name="enabled">
+                                        <bool>false</bool>
+                                    </property>
+                                    <property name="title">
+                                        <string>Chain</string>
+                                    </property>
+                                    <vbox>
+                                        <property name="name">
+                                            <cstring>unnamed</cstring>
+                                        </property>
+                                        <widget class="QRadioButton">
+                                            <property name="name">
+                                                <cstring>radioButton24_2</cstring>
+                                            </property>
+                                            <property name="text">
+                                                <string>chain</string>
+                                            </property>
+                                        </widget>
+                                        <widget class="QCheckBox">
+                                            <property name="name">
+                                                <cstring>checkBox3</cstring>
+                                            </property>
+                                            <property name="text">
+                                                <string>global mute</string>
+                                            </property>
+                                        </widget>
+                                        <widget class="QCheckBox">
+                                            <property name="name">
+                                                <cstring>checkBox2</cstring>
+                                            </property>
+                                            <property name="text">
+                                                <string>chain loop</string>
                                             </property>
                                         </widget>
                                     </vbox>
@@ -983,12 +1023,15 @@
                                     <rect>
                                         <x>9</x>
                                         <y>13</y>
-                                        <width>77</width>
+                                        <width>100</width>
                                         <height>20</height>
                                     </rect>
                                 </property>
                                 <property name="text">
-                                    <string>&amp;mute</string>
+                                    <string>part &amp;mute</string>
+                                </property>
+                                <property name="accel">
+                                    <string>Alt+M</string>
                                 </property>
                             </widget>
                         </widget>

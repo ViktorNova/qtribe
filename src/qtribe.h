@@ -38,8 +38,7 @@ public:
 	sequencerCore* getSequencerThread();    
 
 protected:
- void closeEvent(QCloseEvent*);
-
+	void closeEvent(QCloseEvent*);
 
 private:
 	sequencerCore* sequencerThread;
