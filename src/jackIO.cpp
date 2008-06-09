@@ -194,7 +194,7 @@ void process_midi_output(jack_nframes_t nframes)
 	jack_midi_clear_buffer(port_buffer);
 	#endif
 
-	jack_midi_clear_buffer(port_buffer);
+	//jack_midi_clear_buffer(port_buffer);
 
 	jack_nframes_t first_message_in_buffer=0;
 	
