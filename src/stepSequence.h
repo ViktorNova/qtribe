@@ -24,6 +24,10 @@
 #include <qstring.h>
 #include <fstream>
 
+
+#define MAX_SEQUENCES 16
+#define MAX_STEPS 128
+
 class step
 	{	
 	public:
@@ -47,11 +51,9 @@ class stepSequence
 
 	int sequenceLength;
 	
-	int maxSteps;
 	int selectedStep;
 		
-	//currently, hardcoded max 128 step length.
-	step* stepArray[128]; 
+	step* stepArray[MAX_STEPS]; 
 	
 	public:
 		
@@ -87,9 +89,7 @@ class stepPattern
 	int activeSequenceId;
 	int patternTempo;
 	int globalTempo;
-	//currently hardcoded to 16 parts in a pattern
-	stepSequence* sequences[16];	
-	int maxSequences;
+	stepSequence* sequences[MAX_SEQUENCES];	
 	int patternSteps;
 	
 	QString patternName;
@@ -132,6 +132,24 @@ class stepPattern
 		int nextAssignedId();
 		
 		int currentStepIndex;
+	};
+
+class stepPatternChain
+	{
+	stepPatternChain();
+	~stepPatternChain();
+	
+	public:
+		void setPattern(int);
+		
+		void nextPattern();
+		
+
+	private:
+		stepPattern* patternArray[MAX_STEPS];
+		bool globalMutes[MAX_SEQUENCES];
+		bool originalMutes[MAX_SEQUENCES];
+		bool loopMode;
 	};
 
 #endif
