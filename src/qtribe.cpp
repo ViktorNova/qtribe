@@ -58,7 +58,7 @@ qTribe::qTribe()
 	//if not see if we can load it from /usr/share/qtribe/
 	else
 		{
-		fprintf(stdout,"Creating new Bankfile\n");
+		fprintf(stdout,"Creating new Bank\n");
 		sequencerThread->createBank();
 		}
 
@@ -66,19 +66,25 @@ qTribe::qTribe()
 		{
 		//if our dotfile doesnt exist, we should create it.
 		QDir d(QDir::homeDirPath());
-		if (d.mkdir(".qtribe",FALSE))
+		if (d.exists(".qtribe",FALSE))
 			{
-			fprintf(stdout,"Created ~/.qtribe\n");
+			//dotdir exists, just no file saved in it.
 			}
 		else
 			{
-			fprintf(stderr,"ERROR: Couldn't create ~/.qtdir - check permissions!\n");
-			sequencerThread->stopSequence();
-       			sequencerThread->cleanup();
-        		disconnectJACK();
-			exit(0);
+			if (d.mkdir(".qtribe",FALSE))
+				{
+				fprintf(stdout,"Created ~/.qtribe\n");
+				}
+			else
+				{
+				fprintf(stderr,"ERROR: Couldn't create ~/.qtdir - check permissions!\n");
+				sequencerThread->stopSequence();
+       				sequencerThread->cleanup();
+        			disconnectJACK();
+				exit(0);
+				}
 			}
-
 		}
 	
 	
