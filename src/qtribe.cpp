@@ -41,7 +41,7 @@ qTribe::qTribe()
         
         sequencerThread->initSequencer();       
         QString file("qtribe.bank");
-        QString homePath=QDir::homeDirPath()+QDir::separator()+file;
+        QString homePath=QDir::homeDirPath()+QDir::separator()+".qtribe"+QDir::separator()+file;
         QString defaultPath=DEFAULT_BANK_DIR+QDir::separator()+file;
 
 	//check if our bankfile exists here
@@ -61,15 +61,36 @@ qTribe::qTribe()
 		fprintf(stdout,"Creating new Bankfile\n");
 		sequencerThread->createBank();
 		}
+
+	if (! QFile::exists(homePath))
+		{
+		//if our dotfile doesnt exist, we should create it.
+		QDir d(QDir::homeDirPath());
+		if (d.mkdir(".qtribe",FALSE))
+			{
+			fprintf(stdout,"Created ~/.qtribe\n");
+			}
+		else
+			{
+			fprintf(stderr,"ERROR: Couldn't create ~/.qtdir - check permissions!\n");
+			sequencerThread->stopSequence();
+       			sequencerThread->cleanup();
+        		disconnectJACK();
+			exit(0);
+			}
+
+		}
 	
 	
+		
+
         stepsequencerWidget* sequencerUI=new stepsequencerWidget( this );
         sequencerUI->setBankFile((char*)homePath.ascii());
         
         sequencerThread->start();
         
         setCentralWidget( (QWidget*)sequencerUI);
-        resize( 800, 600 );
+        resize( 800, 480 );
 	//fprintf(stderr,"stepsequencer:stepsequencer - thread pointer %d\n",sequencerThread);
 	}
 
