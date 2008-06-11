@@ -22,8 +22,10 @@
 
 //JACK-specific structures
 jack_port_t* jackOut;
+jack_port_t* jackIn;
 jack_client_t* jackClientObject;
-jack_ringbuffer_t* jackBuffer;
+jack_ringbuffer_t* jackOutputBuffer;
+jack_ringbuffer_t* jackInputBuffer;
 jack_options_t clientOptions=JackNullOption;
 jack_nframes_t sampleRate;
 
@@ -48,14 +50,14 @@ void queue_message(struct midiMessage* ev)
 	{
 	int		written;
 
-	if (jack_ringbuffer_write_space(jackBuffer) < sizeof(*ev)) 
+	if (jack_ringbuffer_write_space(jackOutputBuffer) < sizeof(*ev)) 
 		{
 		fprintf(stderr,"WARNING: Not enough space in the ringbuffer, NOTE LOST.\n");
 		return;
 		}
 
 	//Write the event to our JACK buffer
-	written = jack_ringbuffer_write(jackBuffer, (char*)ev, sizeof(*ev));
+	written = jack_ringbuffer_write(jackOutputBuffer, (char*)ev, sizeof(*ev));
 	
 	//fprintf(stderr,"Wrote midiMessage to ringBuffer\n");
 	if (written != sizeof(*ev))
@@ -159,6 +161,87 @@ double getJackTime()
 
 
 
+void
+process_midi_input(jack_nframes_t nframes)
+	{
+	int read, events, i;
+	void* port_buffer;
+	jack_midi_event_t event;
+
+	port_buffer = jack_port_get_buffer(jackIn, nframes);
+	if (port_buffer == NULL) 
+		{
+		fprintf(stderr,"jack_port_get_buffer failed, cannot receive anything.");
+		return;
+		}
+
+	#ifdef OLD_JACK
+	events = jack_midi_get_event_count(port_buffer, nframes);
+	#else
+	events = jack_midi_get_event_count(port_buffer);
+	#endif
+
+	for (i = 0; i < events; i++) 
+		{
+		#ifdef OLD_JACK
+		read = jack_midi_event_get(&event, port_buffer, i, nframes);
+		#else
+		read = jack_midi_event_get(&event, port_buffer, i);
+		#endif
+
+		if (read) 
+			{
+			fprintf(stderr,"jack_midi_event_get failed, RECEIVED NOTE LOST.");
+			continue;
+			}
+
+		if (event.size > 3) 
+			{
+			fprintf(stderr,"Ignoring MIDI message longer than three bytes, probably a SysEx.");
+			continue;
+			}
+
+		else
+			{
+			
+			
+				struct midiMessage* ev = (midiMessage*) malloc(sizeof(struct midiMessage));
+		
+				if (ev == NULL) 
+					{
+					fprintf(stderr,"EPIC FAIL: couldn't malloc");
+					exit(0);
+					}
+				if (event.size > 3 || event.size < 1)
+					{
+					return;
+					}
+				ev->length = event.size;
+				ev->timestamp = event.time;
+				memcpy(ev->midiData, event.buffer, ev->length);
+			
+				if (ev->midiData[0] == MIDI_NOTE_ON) 
+					{
+					fprintf(stderr,"Got note_on!\n");
+					//we need to do something with the data
+					//perhaps we can write it into our step with a length of 128 until we get a note-off 
+					}
+
+				if (ev->midiData[0] == MIDI_NOTE_OFF) 
+					{
+					fprintf(stderr,"Got note_off!\n");
+					//we have a note-off. we need to figure out which step the note-on belonged to and modify the note length
+					//accordingly.
+					}
+
+				queue_message(ev);
+	
+				
+			}
+		}
+	}
+
+
 //This is where most of the work gets done, iterating through our queued events and stuffing them into
 //the JACK output port if their timestamps match with the current timeframe that JACK is grabbing frames for.
 
@@ -196,18 +279,18 @@ void process_midi_output(jack_nframes_t nframes)
 
 	jack_nframes_t first_message_in_buffer=0;
 	
-	while (jack_ringbuffer_read_space(jackBuffer) && ! looped) 
+	while (jack_ringbuffer_read_space(jackOutputBuffer) && ! looped) 
 		{
 		//fprintf(stderr,"in process_midi_output\n");
 		
 		//Check we have a complete event sitting in our JACK buffer
-		read = jack_ringbuffer_peek(jackBuffer, (char *)&ev, sizeof(ev));
+		read = jack_ringbuffer_peek(jackOutputBuffer, (char *)&ev, sizeof(ev));
 
 		if (read != sizeof(ev)) 
 			{
 			//we have an event fragment in the ringbuffer, throw it away.
 			fprintf(stderr,"WARNING: Short read from the ringbuffer, possible note loss.\n");
-			jack_ringbuffer_read_advance(jackBuffer, read);
+			jack_ringbuffer_read_advance(jackOutputBuffer, read);
 			continue;
 			}
 
@@ -227,7 +310,7 @@ void process_midi_output(jack_nframes_t nframes)
 		
 		if (t >= (int)nframes)
 			{
-			jack_ringbuffer_read_advance(jackBuffer, sizeof(ev));
+			jack_ringbuffer_read_advance(jackOutputBuffer, sizeof(ev));
 			if (! first_message_in_buffer)
 				{
 				//we need to watch for events we have seen before or we will loop infintely.
@@ -244,7 +327,7 @@ void process_midi_output(jack_nframes_t nframes)
 				t = 0;
 
 			//pull our event out of our JACK buffer
-			jack_ringbuffer_read_advance(jackBuffer, sizeof(ev));
+			jack_ringbuffer_read_advance(jackOutputBuffer, sizeof(ev));
 		
 			//ensure we have space to write our event into the JACK output port
 			#ifdef OLD_JACK
@@ -256,7 +339,7 @@ void process_midi_output(jack_nframes_t nframes)
 			
 			if (buffer == NULL) 
 				{
-				fprintf(stderr,"t %d, ev.timestamp: %d, last_frame_time: %d\n",t,ev.timestamp,last_frame_time);
+				//fprintf(stderr,"DEBUG: t %d, ev.timestamp: %d, last_frame_time: %d\n",t,ev.timestamp,last_frame_time);
 				fprintf(stderr,"WARNING: jack_midi_event_reserve failed, NOTE LOST.\n");
 				break;
 				}
@@ -271,7 +354,8 @@ void process_midi_output(jack_nframes_t nframes)
 
 int jack_processCallback (jack_nframes_t nframes, void* arg)
 	{
-	process_midi_output(nframes);			   
+	process_midi_output(nframes);
+	process_midi_input(nframes);			   
   	return 0;      
 	}
 
@@ -309,10 +393,12 @@ int initJACK()
 	//jack_client_open returns 0 on failure
 	if (jackClientObject)
 		{
-		//create our ringbuffer
-		jackBuffer = jack_ringbuffer_create(bufferSize);
+		//create our ringbuffers
+		jackOutputBuffer = jack_ringbuffer_create(bufferSize);
 		
-		//register the handler that will do the work of filling our buffer
+		jackInputBuffer=jack_ringbuffer_create(bufferSize);
+		
+//register the handler that will do the work of filling our buffer
 		jack_set_process_callback (jackClientObject, jack_processCallback, 0);
 		
 		//in case our sample rate changes, we need to update our timing 
@@ -328,8 +414,11 @@ int initJACK()
 		fprintf (stderr,"JACK: engine sample rate: %lu\n",(long)sampleRate);
 		
 		//Attempt to register a MIDI port for output
-		jackOut=jack_port_register(jackClientObject,"stepsequencer_out",JACK_DEFAULT_MIDI_TYPE,JackPortIsOutput,bufferSize);
+		jackOut=jack_port_register(jackClientObject,"qTribe_out",JACK_DEFAULT_MIDI_TYPE,JackPortIsOutput,bufferSize);
 		
+		//Attempt to register a MIDI port for input
+		jackIn=jack_port_register(jackClientObject,"qTribe_in",JACK_DEFAULT_MIDI_TYPE,JackPortIsInput,bufferSize);
+
 		//jack_activate signals JACK we are ready for it to start invoking our callbacks
 		if (jack_activate (jackClientObject)) 
 			{
@@ -357,8 +446,9 @@ int disconnectJACK()
 	jack_port_unregister(jackClientObject,jackOut);	
 	//fprintf(stderr,"close client\n");
 	jack_client_close(jackClientObject);
-	//fprintf(stderr,"free ringbuffer\n");
-	jack_ringbuffer_free(jackBuffer);
+	//fprintf(stderr,"free ringbuffers\n");
+	jack_ringbuffer_free(jackOutputBuffer);
+	jack_ringbuffer_free(jackInputBuffer);
 	return 0;
 	}
 
