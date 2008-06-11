@@ -8,8 +8,8 @@
         <rect>
             <x>0</x>
             <y>0</y>
-            <width>849</width>
-            <height>476</height>
+            <width>907</width>
+            <height>504</height>
         </rect>
     </property>
     <property name="caption">
@@ -65,53 +65,6 @@
                         <property name="spacing">
                             <number>0</number>
                         </property>
-                        <widget class="QFrame">
-                            <property name="name">
-                                <cstring>frame12_2</cstring>
-                            </property>
-                            <property name="frameShape">
-                                <enum>StyledPanel</enum>
-                            </property>
-                            <property name="frameShadow">
-                                <enum>Raised</enum>
-                            </property>
-                            <hbox>
-                                <property name="name">
-                                    <cstring>unnamed</cstring>
-                                </property>
-                                <widget class="QLabel">
-                                    <property name="name">
-                                        <cstring>textLabel1</cstring>
-                                    </property>
-                                    <property name="text">
-                                        <string>BPM</string>
-                                    </property>
-                                </widget>
-                                <widget class="QSpinBox">
-                                    <property name="name">
-                                        <cstring>bpm</cstring>
-                                    </property>
-                                    <property name="maxValue">
-                                        <number>300</number>
-                                    </property>
-                                    <property name="value">
-                                        <number>120</number>
-                                    </property>
-                                </widget>
-                            </hbox>
-                        </widget>
-                        <widget class="QToolButton">
-                            <property name="name">
-                                <cstring>writeButton</cstring>
-                            </property>
-                            <property name="font">
-                                <font>
-                                </font>
-                            </property>
-                            <property name="text">
-                                <string>write bank</string>
-                            </property>
-                        </widget>
                     </vbox>
                 </widget>
                 <widget class="QFrame">
@@ -136,19 +89,119 @@
                         <property name="name">
                             <cstring>unnamed</cstring>
                         </property>
-                        <widget class="QToolButton">
+                        <widget class="QFrame">
                             <property name="name">
-                                <cstring>play</cstring>
+                                <cstring>frame13</cstring>
                             </property>
-                            <property name="text">
-                                <string>Pl&amp;ay</string>
+                            <property name="frameShape">
+                                <enum>StyledPanel</enum>
                             </property>
-                            <property name="accel">
-                                <string>Alt+A</string>
+                            <property name="frameShadow">
+                                <enum>Raised</enum>
                             </property>
-                            <property name="toggleButton">
-                                <bool>true</bool>
-                            </property>
+                            <hbox>
+                                <property name="name">
+                                    <cstring>unnamed</cstring>
+                                </property>
+                                <widget class="QToolButton">
+                                    <property name="name">
+                                        <cstring>writeButton</cstring>
+                                    </property>
+                                    <property name="maximumSize">
+                                        <size>
+                                            <width>100</width>
+                                            <height>32767</height>
+                                        </size>
+                                    </property>
+                                    <property name="font">
+                                        <font>
+                                        </font>
+                                    </property>
+                                    <property name="text">
+                                        <string>write bank</string>
+                                    </property>
+                                </widget>
+                                <widget class="QFrame">
+                                    <property name="name">
+                                        <cstring>frame14</cstring>
+                                    </property>
+                                    <property name="frameShape">
+                                        <enum>StyledPanel</enum>
+                                    </property>
+                                    <property name="frameShadow">
+                                        <enum>Raised</enum>
+                                    </property>
+                                    <hbox>
+                                        <property name="name">
+                                            <cstring>unnamed</cstring>
+                                        </property>
+                                        <widget class="QLabel">
+                                            <property name="name">
+                                                <cstring>textLabel1</cstring>
+                                            </property>
+                                            <property name="text">
+                                                <string>BPM</string>
+                                            </property>
+                                        </widget>
+                                        <widget class="QSpinBox">
+                                            <property name="name">
+                                                <cstring>bpm</cstring>
+                                            </property>
+                                            <property name="maxValue">
+                                                <number>300</number>
+                                            </property>
+                                            <property name="value">
+                                                <number>120</number>
+                                            </property>
+                                        </widget>
+                                    </hbox>
+                                </widget>
+                                <widget class="QToolButton">
+                                    <property name="name">
+                                        <cstring>record</cstring>
+                                    </property>
+                                    <property name="enabled">
+                                        <bool>false</bool>
+                                    </property>
+                                    <property name="minimumSize">
+                                        <size>
+                                            <width>100</width>
+                                            <height>40</height>
+                                        </size>
+                                    </property>
+                                    <property name="maximumSize">
+                                        <size>
+                                            <width>100</width>
+                                            <height>32767</height>
+                                        </size>
+                                    </property>
+                                    <property name="text">
+                                        <string>record</string>
+                                    </property>
+                                </widget>
+                                <widget class="QToolButton">
+                                    <property name="name">
+                                        <cstring>play</cstring>
+                                    </property>
+                                    <property name="sizePolicy">
+                                        <sizepolicy>
+                                            <hsizetype>7</hsizetype>
+                                            <vsizetype>1</vsizetype>
+                                            <horstretch>0</horstretch>
+                                            <verstretch>0</verstretch>
+                                        </sizepolicy>
+                                    </property>
+                                    <property name="text">
+                                        <string>play</string>
+                                    </property>
+                                    <property name="accel">
+                                        <string></string>
+                                    </property>
+                                    <property name="toggleButton">
+                                        <bool>true</bool>
+                                    </property>
+                                </widget>
+                            </hbox>
                         </widget>
                         <widget class="QFrame">
                             <property name="name">
@@ -267,10 +320,10 @@
                                                 <cstring>length</cstring>
                                             </property>
                                             <property name="text">
-                                                <string>note</string>
+                                                <string>&amp;note</string>
                                             </property>
                                             <property name="accel">
-                                                <string></string>
+                                                <string>Alt+N</string>
                                             </property>
                                         </widget>
                                         <widget class="QRadioButton">
@@ -318,7 +371,7 @@
                                                 <cstring>checkBox3</cstring>
                                             </property>
                                             <property name="text">
-                                                <string>global mute</string>
+                                                <string>&amp;global mute</string>
                                             </property>
                                         </widget>
                                         <widget class="QCheckBox">
@@ -1021,8 +1074,8 @@
                                 </property>
                                 <property name="geometry">
                                     <rect>
-                                        <x>9</x>
-                                        <y>13</y>
+                                        <x>10</x>
+                                        <y>0</y>
                                         <width>100</width>
                                         <height>20</height>
                                     </rect>
@@ -1032,6 +1085,25 @@
                                 </property>
                                 <property name="accel">
                                     <string>Alt+M</string>
+                                </property>
+                            </widget>
+                            <widget class="QCheckBox">
+                                <property name="name">
+                                    <cstring>triggerOnSelect</cstring>
+                                </property>
+                                <property name="enabled">
+                                    <bool>false</bool>
+                                </property>
+                                <property name="geometry">
+                                    <rect>
+                                        <x>10</x>
+                                        <y>20</y>
+                                        <width>91</width>
+                                        <height>21</height>
+                                    </rect>
+                                </property>
+                                <property name="text">
+                                    <string>select trig.</string>
                                 </property>
                             </widget>
                         </widget>
@@ -1244,12 +1316,6 @@
 </widget>
 <connections>
     <connection>
-        <sender>bpm</sender>
-        <signal>valueChanged(int)</signal>
-        <receiver>stepsequencerwidgetbase</receiver>
-        <slot>bpm_valueChanged(int)</slot>
-    </connection>
-    <connection>
         <sender>play</sender>
         <signal>toggled(bool)</signal>
         <receiver>stepsequencerwidgetbase</receiver>
@@ -1308,6 +1374,12 @@
         <signal>clicked()</signal>
         <receiver>stepsequencerwidgetbase</receiver>
         <slot>writeButton_clicked()</slot>
+    </connection>
+    <connection>
+        <sender>bpm</sender>
+        <signal>valueChanged(int)</signal>
+        <receiver>stepsequencerwidgetbase</receiver>
+        <slot>bpm_valueChanged(int)</slot>
     </connection>
 </connections>
 <slots>
