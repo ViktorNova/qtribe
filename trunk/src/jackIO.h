@@ -21,6 +21,9 @@
 #ifndef _JACKIO_H_
 #define _JACKIO_H_
 
+#define MIDI_NOTE_ON		0x90
+#define MIDI_NOTE_OFF		0x80
+
 #include <sys/time.h>
 
 #include <jack/jack.h>
