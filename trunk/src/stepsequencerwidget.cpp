@@ -75,6 +75,9 @@ setDrumPartButtonColors();
 
 muteMode=0;
 
+
+
+
 //create a timer to periodically refresh our gui while our sequencer
 //plays in our sequncerThread
 
@@ -114,6 +117,7 @@ void stepsequencerWidget::play_toggled(bool b)
 		//fprintf(stderr,"Stopping Sequencein thread %d\n",mySequencerThread);
 		mySequencerThread->stopSequence();
 		playing=0;
+		setStepButtonColors();
 		}
 
 	}
@@ -438,8 +442,7 @@ void stepsequencerWidget::setStepButtonColors()
 			pal.setColor( QPalette::Active, QColorGroup::Button, buttonOffColor);
 			myButton ->setPalette( pal );
 			}
-		}
-
+		}	
 	}
 
 void stepsequencerWidget::setSynthPartButtonColors()
@@ -520,6 +523,7 @@ void stepsequencerWidget::muteParts_toggled(bool b)
 void stepsequencerWidget::updatePlaybackPosition()
 	{
 	stepPattern* myPattern=mySequencerThread->getCurrentPattern();
+	stepSequence* activeSequence=myPattern->getActiveSequence();
 	int s=myPattern->getCurrentStepIndex();
 	//fprintf(stderr,"DEBUG: step %d\n",s);
 	if (delayedPatternChange && s==0)
@@ -551,12 +555,29 @@ void stepsequencerWidget::updatePlaybackPosition()
 		{playPositionGroup->setButton(7);}
 	//fprintf(stderr,"stepPos: %d\n",s % 16);
 	
-	setStepButtonColors();
+	//setStepButtonColors();
 	if (playing)
 		{
-		QToolButton* myButton=(QToolButton*) sequenceGroup->find(s % 16);
+		int myButtonIndex=s % 16;
+		int myPrevButtonIndex=myButtonIndex-1;
+		if (myPrevButtonIndex < 0)
+			{myPrevButtonIndex=15;}
+		QToolButton* myButton=(QToolButton*) sequenceGroup->find(myButtonIndex);
 		pal.setColor( QPalette::Active, QColorGroup::Button, buttonPlayColor);
 		myButton ->setPalette( pal ); 
+		myButton=(QToolButton*) sequenceGroup->find(myPrevButtonIndex);
+		step* myStep=activeSequence->getStep(myPrevButtonIndex+(selectedMeasure*16));
+		if (myStep->isOn)
+				{
+ 				pal.setColor( QPalette::Active, QColorGroup::Button, buttonOnColor);
+				myButton ->setPalette( pal ); 
+				}
+			else
+				{
+				pal.setColor( QPalette::Active, QColorGroup::Button, buttonOffColor);
+				myButton ->setPalette( pal );
+				}		
+
 		}	
 	}
 
@@ -609,6 +630,7 @@ void stepsequencerWidget::patternModeGroup_clicked(int i)
 		{
 		dataDisplay->setText(QString("%1").arg((myPattern->getPatternLength()+9)/16));
 		}
+	
 	setStepButtonColors();
 	}
 
