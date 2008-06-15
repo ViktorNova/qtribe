@@ -67,6 +67,7 @@ private:
 
 
 
+
 protected:
     /*$PROTECTED_FUNCTIONS$*/
 public slots:
