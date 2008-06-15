@@ -256,7 +256,7 @@ void sequencerCore::loadBank(char* fileName)
 	stepSequence* currentSequence=NULL;	
 	step* currentStep;
 	int currentStepIndex=0;
-	int patternLength=0;
+	int patternLength=NULL;
 	int currentPatternIndex=0;
 
   	while( fin.getline(str,LINE_LENGTH) ) 
@@ -267,6 +267,13 @@ void sequencerCore::loadBank(char* fileName)
 		if (parts[0]=="pattern")
 			{
 			//fprintf(stderr,"FOUND PATTERN\n");
+			
+			//we need to set the patern length of the previous pattern when we encounter a pattern tag.
+			//see also the block at the ned of the loop that sets the length of the last pattern
+			if (patternLength && currentPattern)
+				{
+				currentPattern->setPatternLength(patternLength);
+				}
 			currentPattern=new stepPattern();
 			patterns[currentPatternIndex]=currentPattern;
 			currentPatternIndex++;
@@ -308,7 +315,11 @@ void sequencerCore::loadBank(char* fileName)
 			}
 
   		}
-	currentPattern->setPatternLength(patternLength);	
+	//set patternlength of last pattern.
+	if (patternLength && currentPattern)
+		{
+		currentPattern->setPatternLength(patternLength);
+		}	
 	myPattern=patterns[0];
 	myPatternNumber=1;
 	}
