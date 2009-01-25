@@ -374,10 +374,103 @@ stepSequence* stepPattern::getDrumAccentSequence()
 	return getSequence(drumAccentSequence);
 	}
 
+
+
+
+
+
+
+
+
+
+
+
+
 stepPatternChain::stepPatternChain()
 	{
-
+	for (int i=0;i < 16;i++)
+		{
+		patternArray[i]=0;
+		partsMuted[i]=0;
+		}
+	currentPattern=1;
 	}
+
+void stepPatternChain::resetPatternMutes()
+	{
+	for (int i=0;i<16;i++)
+		{
+		setPartMuted(i,0);
+		}
+	}
+
+void stepPatternChain::setPartMuted(int i, int j)
+	{
+	fprintf(stderr,"Setting part[%d] to %d\n",i,j); 
+	partsMuted[i]=j;
+	}
+
+int stepPatternChain::getCurrentPattern()
+	{
+	fprintf(stderr,"in getCurrentPattern() - returning index %d(%d)\n",currentPattern-1,patternArray[currentPattern-1]);
+	return patternArray[currentPattern-1];
+	}
+
+int stepPatternChain::getCurrentPatternIndex()
+	{
+	fprintf(stderr,"in getCurrentPatternIndex() - returning index %d\n",currentPattern-1);
+	return currentPattern-1;
+	}
+
+int stepPatternChain::getPatternIndex(int i)
+	{
+	return patternArray[i];
+	}
+
+int stepPatternChain::getNextPattern()
+	{
+	//fprintf(stderr,"in getNextPattern()\n");
+	currentPattern++;
+	if (currentPattern > 16)
+		{
+		currentPattern=1;
+		}
+	if (patternArray[currentPattern-1]==0)
+		{
+		currentPattern=1;
+		fprintf(stderr,"DEBUG: getNextPattern() Looping returning 1st pattern (%d)\n",patternArray[0]);
+		return patternArray[0];
+		}
+	else	
+		{
+		fprintf(stderr,"DEBUG: getNextPattern() returning current pattern  - %d\n",currentPattern-1);
+		return patternArray[currentPattern-1];
+		}
+	}
+
+void stepPatternChain::setPattern(int i, int j)
+	{
+	patternArray[i]=j;
+	}
+
+void stepPatternChain::serialise(FILE* file)
+	{
+	fprintf(file,"patternchain:");
+	for (int i=0;i < 16;i++)
+		{
+		fprintf(file,"%d|",patternArray[i]);
+		}
+	fprintf(file,"\n");
+
+	fprintf(file,"mutes:");
+	for (int i=0;i<MAX_SEQUENCES;i++)
+		{
+		fprintf(file,"%d|",partsMuted[i]);
+		}
+	fprintf(file,"\n");
+	}
+
+
 
 stepPatternChain::~stepPatternChain()
 	{
