@@ -24,7 +24,6 @@
 #include <qstring.h>
 #include <fstream>
 
-
 #define MAX_SEQUENCES 16
 #define MAX_STEPS 128
 
@@ -41,6 +40,7 @@ class step
 		void serialise(FILE*);
 	};
 
+
 class stepSequence
 	{
 	//TODO: do these need to be QStrings?
@@ -54,7 +54,7 @@ class stepSequence
 	int selectedStep;
 		
 	step* stepArray[MAX_STEPS]; 
-	
+
 	public:
 		
 		int midiChannel;
@@ -83,6 +83,8 @@ class stepSequence
 	};
 
 
+
+
 class stepPattern
 	{
 	
@@ -91,15 +93,18 @@ class stepPattern
 	int globalTempo;
 	stepSequence* sequences[MAX_SEQUENCES];	
 	int patternSteps;
-	
+
 	QString patternName;
 	
 	int drumAccentSequence;
 	
+	
+	
 	public:
 		stepPattern();
 		~stepPattern();
-		
+			
+	
 		stepSequence* getActiveSequence();
 		stepSequence* getSequence(int index);	
 	
@@ -107,7 +112,7 @@ class stepPattern
 		
 		int addSequence(const char*,const char*,int);
 		void removeSequence(int);
-
+		
 		int getPatternLength();
 		void setPatternLength(int);
 		
@@ -134,21 +139,33 @@ class stepPattern
 		int currentStepIndex;
 	};
 
+
+
 class stepPatternChain
 	{
-	stepPatternChain();
-	~stepPatternChain();
+	
+	int partsMuted[MAX_SEQUENCES];
 	
 	public:
-		void setPattern(int);
+		stepPatternChain();
+		~stepPatternChain();		
+		void setPattern(int,int);
 		
-		void nextPattern();
+		int getCurrentPattern();
+		int getCurrentPatternIndex();
+		int getNextPattern();
+		int getPatternIndex(int);
+
+		void resetPatternMutes();
+		void setPartMuted(int, int);
 		
+		
+		
+		void serialise(FILE*);
 
 	private:
-		stepPattern* patternArray[MAX_STEPS];
-		bool globalMutes[MAX_SEQUENCES];
-		bool originalMutes[MAX_SEQUENCES];
+		int patternArray[16];
+		int currentPattern;
 		bool loopMode;
 	};
 

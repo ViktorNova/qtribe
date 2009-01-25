@@ -36,6 +36,8 @@ class sequencerCore : public QThread
 		void cleanup();
 		void setPattern(int i);
 		
+
+		stepPatternChain* getPatternChain();
 		stepPattern* getCurrentPattern();
 		int getCurrentPatternIndex();
 		
@@ -46,12 +48,15 @@ class sequencerCore : public QThread
 		void loadBank(char*);
 		void saveBank(char*);
 
+		void setActiveSequence(int seq);
+
 		sequencerCore();
 		~sequencerCore();
 	private:
-		stepPattern* patterns[16];
-		
+		stepPatternChain* myPatternChain;
+		stepPattern* patterns[16];		
 		stepPattern* myPattern;	
+
 		int myPatternNumber;
 		
 		stepPattern* createBlankPattern();

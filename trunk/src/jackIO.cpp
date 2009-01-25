@@ -220,14 +220,14 @@ process_midi_input(jack_nframes_t nframes)
 				ev->timestamp = event.time;
 				memcpy(ev->midiData, event.buffer, ev->length);
 			
-				if (ev->midiData[0] == MIDI_NOTE_ON) 
+				if (ev->midiData[0] == MIDI_NOTE_ON)
 					{
 					fprintf(stderr,"Got note_on!\n");
 					//we need to do something with the data
 					//perhaps we can write it into our step with a length of 128 until we get a note-off 
 					}
 
-				if (ev->midiData[0] == MIDI_NOTE_OFF) 
+				if (ev->midiData[0] == MIDI_NOTE_OFF)
 					{
 					fprintf(stderr,"Got note_off!\n");
 					//we have a note-off. we need to figure out which step the note-on belonged to and modify the note length

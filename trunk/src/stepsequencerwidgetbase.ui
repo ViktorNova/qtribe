@@ -9,7 +9,7 @@
             <x>0</x>
             <y>0</y>
             <width>907</width>
-            <height>504</height>
+            <height>512</height>
         </rect>
     </property>
     <property name="caption">
@@ -349,7 +349,7 @@
                                         <cstring>chainGroup</cstring>
                                     </property>
                                     <property name="enabled">
-                                        <bool>false</bool>
+                                        <bool>true</bool>
                                     </property>
                                     <property name="title">
                                         <string>Chain</string>
@@ -362,16 +362,11 @@
                                             <property name="name">
                                                 <cstring>radioButton24_2</cstring>
                                             </property>
+                                            <property name="enabled">
+                                                <bool>true</bool>
+                                            </property>
                                             <property name="text">
                                                 <string>chain</string>
-                                            </property>
-                                        </widget>
-                                        <widget class="QCheckBox">
-                                            <property name="name">
-                                                <cstring>checkBox3</cstring>
-                                            </property>
-                                            <property name="text">
-                                                <string>&amp;global mute</string>
                                             </property>
                                         </widget>
                                         <widget class="QCheckBox">
@@ -1097,13 +1092,45 @@
                                 <property name="geometry">
                                     <rect>
                                         <x>10</x>
-                                        <y>20</y>
+                                        <y>30</y>
                                         <width>91</width>
                                         <height>21</height>
                                     </rect>
                                 </property>
                                 <property name="text">
                                     <string>select trig.</string>
+                                </property>
+                            </widget>
+                            <widget class="QCheckBox">
+                                <property name="name">
+                                    <cstring>checkBox6</cstring>
+                                </property>
+                                <property name="geometry">
+                                    <rect>
+                                        <x>110</x>
+                                        <y>0</y>
+                                        <width>136</width>
+                                        <height>20</height>
+                                    </rect>
+                                </property>
+                                <property name="text">
+                                    <string>global mute</string>
+                                </property>
+                            </widget>
+                            <widget class="QLabel">
+                                <property name="name">
+                                    <cstring>statusline</cstring>
+                                </property>
+                                <property name="geometry">
+                                    <rect>
+                                        <x>10</x>
+                                        <y>60</y>
+                                        <width>550</width>
+                                        <height>31</height>
+                                    </rect>
+                                </property>
+                                <property name="text">
+                                    <string>Status</string>
                                 </property>
                             </widget>
                         </widget>
@@ -1381,6 +1408,12 @@
         <receiver>stepsequencerwidgetbase</receiver>
         <slot>bpm_valueChanged(int)</slot>
     </connection>
+    <connection>
+        <sender>chainGroup</sender>
+        <signal>clicked(int)</signal>
+        <receiver>stepsequencerwidgetbase</receiver>
+        <slot>chainGroup_clicked(int)</slot>
+    </connection>
 </connections>
 <slots>
     <slot>bpm_valueChanged(int)</slot>
@@ -1400,6 +1433,9 @@
     <slot>toolButton31_clicked()</slot>
     <slot>writeButton_clicked()</slot>
     <slot>loadButton_clicked()</slot>
+    <slot>setMutes_clicked()</slot>
+    <slot>clearMutes_clicked()</slot>
+    <slot>chainGroup_clicked(int)</slot>
 </slots>
 <layoutdefaults spacing="6" margin="11"/>
 </UI>

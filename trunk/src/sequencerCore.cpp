@@ -92,7 +92,20 @@ int sequencerCore::getCurrentPatternIndex()
 
 stepPattern* sequencerCore::getCurrentPattern()
 	{
+	//catch oddball condition - switching from chain to pattern mode after setting all steps to P0 in chain mode
+	if (myPatternNumber==0)
+		{
+		myPatternNumber=1;
+		myPattern=patterns[0];
+		}
 	return myPattern;
+	
+	}
+
+
+stepPatternChain* sequencerCore::getPatternChain()
+	{
+	return myPatternChain;
 	}
 
 void sequencerCore::run()
@@ -215,6 +228,9 @@ void sequencerCore::initSequencer()
 		}
 	myPattern=patterns[0];
 	myPatternNumber=1;
+
+	myPatternChain=new stepPatternChain();
+	
 	}
 
 
@@ -222,6 +238,7 @@ void sequencerCore::saveBank(char* fileName)
 	{
 	FILE* file;
 	file = fopen (fileName,"w");
+	myPatternChain->serialise(file);
 	for (int i=0;i<16;i++)
 		{
 		patterns[i]->serialise(file);
@@ -239,6 +256,21 @@ void sequencerCore::createBank()
 	}
 
 
+void sequencerCore::setActiveSequence(int seq)
+	{
+	for (int i=0;i < 16;i++)
+		{
+		stepPattern* p=patterns[i];
+		if (p != NULL)
+			{
+			fprintf(stderr,"Setting pattern %d active seq to %d\n",i,seq);
+			p->setActiveSequence(seq);
+			}
+		}
+
+	}
+
+
 void sequencerCore::loadBank(char* fileName)
 	{
 	std::ifstream fin(fileName);
@@ -252,6 +284,7 @@ void sequencerCore::loadBank(char* fileName)
 		patterns[i]=NULL;
 		}
 	myPattern=NULL;
+	stepPatternChain* currentPatternChain=NULL;
 	stepPattern* currentPattern=NULL;
 	stepSequence* currentSequence=NULL;	
 	step* currentStep;
@@ -264,6 +297,34 @@ void sequencerCore::loadBank(char* fileName)
     		//use QStrings to make this easy
 		QString line(str);
 		QStringList parts = QStringList::split( ":", line );
+		
+		
+		if (parts[0]=="patternchain")
+			{
+			fprintf(stderr,"DEBUG: loading patternchain\n");
+			currentPatternChain=new stepPatternChain();
+			QStringList data = QStringList::split( "|", parts[1] );
+			for (int i=0;i<16;i++)
+				{
+				currentPatternChain->setPattern(i,atoi(data[i]));
+				}
+			}
+
+
+		if (parts[0]=="mutes")
+			{
+			fprintf(stderr,"DEBUG: loading mutes\n");
+			QStringList data = QStringList::split( "|", parts[1] );
+			for (int i=0;i<16;i++)
+				{
+				if (currentPatternChain != NULL)
+					{
+					currentPatternChain->setPartMuted(i,atoi(data[i]));
+					}
+				}
+			}
+		
+
 		if (parts[0]=="pattern")
 			{
 			//fprintf(stderr,"FOUND PATTERN\n");
@@ -283,6 +344,8 @@ void sequencerCore::loadBank(char* fileName)
 			currentPattern->setPatternTempo(atoi(data[2]));
 			currentPattern->setDrumAccentSequence(atoi(data[3]));
 			}
+		
+		
 		if (parts[0]=="sequence")
 			{
 			//fprintf(stderr,"FOUND SEQUENCE\n");
@@ -322,6 +385,10 @@ void sequencerCore::loadBank(char* fileName)
 		}	
 	myPattern=patterns[0];
 	myPatternNumber=1;
+	if (currentPatternChain != NULL)
+		{
+		myPatternChain=currentPatternChain;
+		}
 	}
 
 

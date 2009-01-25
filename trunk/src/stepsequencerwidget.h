@@ -43,6 +43,7 @@ private:
 	qTribe* mySequencer;
 	sequencerCore* mySequencerThread;
 	int selectedStep;
+	int selectedChainStep;
 	
 	int patternStepSong;
 	int stepMode;
@@ -58,8 +59,10 @@ private:
 	QColor buttonOffColor;
 	QColor buttonOnColor;
 	QColor buttonPlayColor;
+	QColor selectedChainColor;
 	QString bankFile;
 	void setStepButtonColors();
+	void chainClearStepButtonColors();
 	void setSynthPartButtonColors();
 	void setDrumPartButtonColors();
 	void updatePlaybackPosition();
@@ -96,6 +99,8 @@ public slots:
     virtual void updateGui();
     virtual void writeButton_clicked();
     virtual void loadButton_clicked();
+    virtual void chainGroup_clicked(int);
+
 };
 #endif
 
