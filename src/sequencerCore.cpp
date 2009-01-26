@@ -134,6 +134,7 @@ void sequencerCore::run()
 						int patternStep=myPattern->getCurrentStepIndex();
 						//play our step
 						step* myStep=mySequence->getStep(patternStep);
+						step* arpStep=mySequence->getArpStep(patternStep);
 						if (myStep->isOn)
 							{
 							if (mySequence->drumSequence==1)
@@ -154,7 +155,7 @@ void sequencerCore::run()
 								
 								queue_message(thisStepTime+(myStep->noteLength*stepDelta),mySequence->getMidiChannel()-1,128,mySequence->drumNote,0); //note off
 								
-								seq_note_inc+=1;
+								
 
 								}
 							else
@@ -163,10 +164,19 @@ void sequencerCore::run()
 			
 								queue_message(thisStepTime+(myStep->noteLength*stepDelta),mySequence->getMidiChannel()-1,128,myStep->noteNumber,0); //note off}
 								
-								seq_note_inc+=1;
+							
+							
 								
 								//fprintf(stderr,"Note length %d: on / off queued: %d %d\n",myStep->noteLength,thisStepTime,thisStepTime+(myStep->noteLength*stepDelta));
 								}
+							
+							seq_note_inc+=1;
+							}
+						if (arpStep->isOn)
+							{
+							queue_message(thisStepTime+seq_note_inc,mySequence->getMidiChannel()-1,144,arpStep->noteNumber,arpStep->noteVelocity); //note on
+			
+							queue_message(thisStepTime+(myStep->noteLength*stepDelta),mySequence->getMidiChannel()-1,128,arpStep->noteNumber,0); //note off}
 							}
 						}	
 					}
@@ -373,6 +383,7 @@ void sequencerCore::loadBank(char* fileName)
 			currentStep->noteNumber=atoi(data[1]);
 			currentStep->noteLength=atoi(data[2]);
 			currentStep->noteVelocity=atoi(data[3]);
+			currentStep->noteTonality=atoi(data[3]);
 			currentStepIndex++;
 			//fprintf(stderr,"STEP: %d %d\n",currentStep->isOn,currentStep->noteNumber);
 			}

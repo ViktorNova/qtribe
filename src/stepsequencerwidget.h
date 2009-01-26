@@ -100,6 +100,7 @@ public slots:
     virtual void writeButton_clicked();
     virtual void loadButton_clicked();
     virtual void chainGroup_clicked(int);
+    virtual void arpOn_stateChanged(int);
 
 };
 #endif
