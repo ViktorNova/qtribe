@@ -307,7 +307,15 @@ void stepsequencerWidget::dataDial_valueChanged(int dataVal)
 				dataDisplay->setText(QString("%1").arg(dataVal));
 	
 				}
-
+			if (selectedStep && stepMode==4)
+				{
+				int step_array_index=selectedStep-1;
+				step* myStep;
+				myStep=mySequence->getStep(step_array_index+(selectedMeasure*16));	
+				myStep->noteTonality=dataVal;
+				dataDisplay->setText(QString("%1").arg(dataVal));
+	
+				}
 
 			}
 		if (selectedStep && stepMode==2)
@@ -371,7 +379,7 @@ void stepsequencerWidget::stepModeGroup_clicked(int mode)
 			}
 		}
 
-	else if (stepMode==1 || stepMode==2 || stepMode==3)
+	else if (stepMode==1 || stepMode==2 || stepMode==3 || stepMode==4)
 		{
 		sequenceGroup->setExclusive(TRUE);
 		dataDisplay->setText("---");
@@ -403,6 +411,10 @@ void stepsequencerWidget::stepModeGroup_clicked(int mode)
 			if (stepMode==3)
 				{
 				dataDisplay->setText(QString("%1").arg(myStep->noteVelocity));		
+				}
+			if (stepMode==4)
+				{
+				dataDisplay->setText(QString("%1").arg(myStep->noteTonality));		
 				}
 
 			}
@@ -835,6 +847,22 @@ void stepsequencerWidget::chainGroup_clicked(int i)
 	setDrumPartButtonColors();
 	chainClearStepButtonColors();
 	}
+
+void stepsequencerWidget::arpOn_stateChanged(int i)
+	{
+	fprintf(stderr,"DEBUG:arpOn_stateChanged %d\n",i);
+	stepPattern* myPattern=mySequencerThread->getCurrentPattern();
+	stepSequence* mySequence=myPattern->getActiveSequence();
+	if (i > 0)
+		{
+		mySequence->arpeggiate();
+		}
+	else
+		{
+		mySequence->clearArp();
+		}
+	}
+
 
 
 

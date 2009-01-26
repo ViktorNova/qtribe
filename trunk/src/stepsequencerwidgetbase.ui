@@ -342,6 +342,14 @@
                                                 <string>velocit&amp;y</string>
                                             </property>
                                         </widget>
+                                        <widget class="QRadioButton">
+                                            <property name="name">
+                                                <cstring>radioButton26</cstring>
+                                            </property>
+                                            <property name="text">
+                                                <string>tonality</string>
+                                            </property>
+                                        </widget>
                                     </vbox>
                                 </widget>
                                 <widget class="QButtonGroup">
@@ -497,88 +505,115 @@
                     <property name="exclusive">
                         <bool>true</bool>
                     </property>
-                    <hbox>
+                    <widget class="QToolButton">
                         <property name="name">
-                            <cstring>unnamed</cstring>
+                            <cstring>synthPart1</cstring>
                         </property>
-                        <widget class="QToolButton">
-                            <property name="name">
-                                <cstring>synthPart1</cstring>
-                            </property>
-                            <property name="minimumSize">
-                                <size>
-                                    <width>0</width>
-                                    <height>50</height>
-                                </size>
-                            </property>
-                            <property name="maximumSize">
-                                <size>
-                                    <width>40</width>
-                                    <height>32767</height>
-                                </size>
-                            </property>
-                            <property name="text">
-                                <string>1</string>
-                            </property>
-                            <property name="toggleButton">
-                                <bool>true</bool>
-                            </property>
-                            <property name="on">
-                                <bool>true</bool>
-                            </property>
-                        </widget>
-                        <widget class="QToolButton">
-                            <property name="name">
-                                <cstring>synthPart2</cstring>
-                            </property>
-                            <property name="maximumSize">
-                                <size>
-                                    <width>40</width>
-                                    <height>32767</height>
-                                </size>
-                            </property>
-                            <property name="text">
-                                <string>2</string>
-                            </property>
-                            <property name="toggleButton">
-                                <bool>true</bool>
-                            </property>
-                        </widget>
-                        <widget class="QToolButton">
-                            <property name="name">
-                                <cstring>synthPart3</cstring>
-                            </property>
-                            <property name="maximumSize">
-                                <size>
-                                    <width>40</width>
-                                    <height>32767</height>
-                                </size>
-                            </property>
-                            <property name="text">
-                                <string>3</string>
-                            </property>
-                            <property name="toggleButton">
-                                <bool>true</bool>
-                            </property>
-                        </widget>
-                        <widget class="QToolButton">
-                            <property name="name">
-                                <cstring>synthPart4</cstring>
-                            </property>
-                            <property name="maximumSize">
-                                <size>
-                                    <width>40</width>
-                                    <height>32767</height>
-                                </size>
-                            </property>
-                            <property name="text">
-                                <string>4</string>
-                            </property>
-                            <property name="toggleButton">
-                                <bool>true</bool>
-                            </property>
-                        </widget>
-                    </hbox>
+                        <property name="geometry">
+                            <rect>
+                                <x>11</x>
+                                <y>21</y>
+                                <width>40</width>
+                                <height>50</height>
+                            </rect>
+                        </property>
+                        <property name="minimumSize">
+                            <size>
+                                <width>0</width>
+                                <height>50</height>
+                            </size>
+                        </property>
+                        <property name="maximumSize">
+                            <size>
+                                <width>40</width>
+                                <height>32767</height>
+                            </size>
+                        </property>
+                        <property name="text">
+                            <string>1</string>
+                        </property>
+                        <property name="toggleButton">
+                            <bool>true</bool>
+                        </property>
+                        <property name="on">
+                            <bool>true</bool>
+                        </property>
+                    </widget>
+                    <widget class="QToolButton">
+                        <property name="name">
+                            <cstring>synthPart2</cstring>
+                        </property>
+                        <property name="geometry">
+                            <rect>
+                                <x>57</x>
+                                <y>21</y>
+                                <width>40</width>
+                                <height>50</height>
+                            </rect>
+                        </property>
+                        <property name="maximumSize">
+                            <size>
+                                <width>40</width>
+                                <height>32767</height>
+                            </size>
+                        </property>
+                        <property name="text">
+                            <string>2</string>
+                        </property>
+                        <property name="toggleButton">
+                            <bool>true</bool>
+                        </property>
+                    </widget>
+                    <widget class="QToolButton">
+                        <property name="name">
+                            <cstring>synthPart3</cstring>
+                        </property>
+                        <property name="geometry">
+                            <rect>
+                                <x>103</x>
+                                <y>21</y>
+                                <width>40</width>
+                                <height>50</height>
+                            </rect>
+                        </property>
+                        <property name="maximumSize">
+                            <size>
+                                <width>40</width>
+                                <height>32767</height>
+                            </size>
+                        </property>
+                        <property name="text">
+                            <string>3</string>
+                        </property>
+                        <property name="toggleButton">
+                            <bool>true</bool>
+                        </property>
+                    </widget>
+                    <widget class="QToolButton">
+                        <property name="name">
+                            <cstring>synthPart4</cstring>
+                        </property>
+                        <property name="geometry">
+                            <rect>
+                                <x>149</x>
+                                <y>21</y>
+                                <width>40</width>
+                                <height>50</height>
+                            </rect>
+                        </property>
+                        <property name="maximumSize">
+                            <size>
+                                <width>40</width>
+                                <height>32767</height>
+                            </size>
+                        </property>
+                        <property name="text">
+                            <string>4</string>
+                        </property>
+                        <property name="toggleButton">
+                            <bool>true</bool>
+                        </property>
+                    </widget>
                 </widget>
                 <widget class="QButtonGroup">
                     <property name="name">
@@ -1133,6 +1168,25 @@
                                     <string>Status</string>
                                 </property>
                             </widget>
+                            <widget class="QCheckBox">
+                                <property name="name">
+                                    <cstring>arpOn</cstring>
+                                </property>
+                                <property name="geometry">
+                                    <rect>
+                                        <x>110</x>
+                                        <y>30</y>
+                                        <width>100</width>
+                                        <height>31</height>
+                                    </rect>
+                                </property>
+                                <property name="text">
+                                    <string>arpeggiate</string>
+                                </property>
+                                <property name="accel">
+                                    <string></string>
+                                </property>
+                            </widget>
                         </widget>
                     </hbox>
                 </widget>
@@ -1414,6 +1468,12 @@
         <receiver>stepsequencerwidgetbase</receiver>
         <slot>chainGroup_clicked(int)</slot>
     </connection>
+    <connection>
+        <sender>arpOn</sender>
+        <signal>stateChanged(int)</signal>
+        <receiver>stepsequencerwidgetbase</receiver>
+        <slot>arpOn_stateChanged(int)</slot>
+    </connection>
 </connections>
 <slots>
     <slot>bpm_valueChanged(int)</slot>
@@ -1436,6 +1496,7 @@
     <slot>setMutes_clicked()</slot>
     <slot>clearMutes_clicked()</slot>
     <slot>chainGroup_clicked(int)</slot>
+    <slot>arpOn_stateChanged(int)</slot>
 </slots>
 <layoutdefaults spacing="6" margin="11"/>
 </UI>

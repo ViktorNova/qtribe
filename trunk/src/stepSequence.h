@@ -34,8 +34,9 @@ class step
 		int noteNumber;
 		int noteLength;
 		int noteVelocity;
+		int noteTonality;
 		step();
-		step(int,int,int,int);
+		step(int,int,int,int,int);
 		~step();
 		void serialise(FILE*);
 	};
@@ -53,13 +54,17 @@ class stepSequence
 	
 	int selectedStep;
 		
-	step* stepArray[MAX_STEPS]; 
+	step* stepArray[MAX_STEPS];
+	step* arpArray[MAX_STEPS];
+	
+	int arpCounter;
 
 	public:
 		
 		int midiChannel;
 		int drumSequence;
 		int drumNote;
+		bool arp;
 		
 		stepSequence();
 		~stepSequence();
@@ -79,7 +84,12 @@ class stepSequence
 		void setMuted(int);
 			
 		step* getStep(int);
+		step* getArpStep(int);
 		void serialise(FILE*);
+
+		void arpeggiate();
+		void clearArp();
+		int getNextArpOffset(int);
 	};
 
 

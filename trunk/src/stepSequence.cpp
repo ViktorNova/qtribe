@@ -30,15 +30,17 @@ step::step()
 	noteNumber=64;
 	noteLength=1;
 	noteVelocity=64;
+	noteTonality=0;
 	}
 
-step::step(int o,int nN, int nL, int nV)
+step::step(int o,int nN, int nL, int nV,int nT)
 	{
 	//fprintf(stderr,"DEBUG: step::step(int,int,int,int) - Creating step\n");
 	isOn=o;
 	noteNumber=nN;
 	noteLength=nL;
 	noteVelocity=nV;
+	noteTonality=nT;
 	}
 
 step::~step()
@@ -49,7 +51,7 @@ step::~step()
 
 void step::serialise(FILE* file)
 	{
-	fprintf(file,"step:%d|%d|%d|%d\n",isOn,noteNumber,noteLength,noteVelocity);
+	fprintf(file,"step:%d|%d|%d|%d|%d\n",isOn,noteNumber,noteLength,noteVelocity,noteTonality);
 	}
 
 stepSequence::stepSequence()
@@ -65,11 +67,14 @@ stepSequence::stepSequence()
 	selectedStep=-1;
 	drumSequence=0;
 	drumNote=0;
+	arp=false;
+	arpCounter=0;
 	
 	//fill our sequence with steps
 	for (int i=0;i<MAX_STEPS;i++)
 		{
-		stepArray[i]=new step(0,40,1,64); //default - E2, 1 step length, 64 velocity
+		stepArray[i]=new step(0,40,1,64,0); //default - E2, 1 step length, 64 velocity, no tonality
+		arpArray[i]=new step(0,40,1,64,0); //init arpArray to something, even though we will overwrite this when we calculate our arp pattern.
 		}
 
 	}
@@ -91,12 +96,21 @@ stepSequence::~stepSequence()
 	}
 
 
+
 step* stepSequence::getStep(int stepId)
 	{
 	step* myStep;
 	myStep=stepArray[stepId];
 	return myStep;
 	}
+
+step* stepSequence::getArpStep(int stepId)
+	{
+	step* myStep;
+	myStep=arpArray[stepId];
+	return myStep;
+	}
+
 
 const char* stepSequence::getSequenceName()
 	{
@@ -154,6 +168,89 @@ void stepSequence::serialise(FILE* file)
 		stepArray[i]->serialise(file);
 		}
 	}
+
+void stepSequence::clearArp()
+	{
+	for (int i=0;i < MAX_STEPS;i++)
+		{
+		step* arpStep=arpArray[i];
+		arpStep->isOn=0;
+		}
+	}
+
+void stepSequence::arpeggiate()
+	{
+	//TODO: stub method for testing - this should take some arguments for tonality, note length, speed and direction.
+	
+	//for now lets just construct an ascending minor arpeggio on 16th notes
+	int baseNote=0;
+	int tonality=0;
+	//clear our arpeggio data
+	for (int i=0;i < MAX_STEPS;i++)
+		{
+		step* arpStep=arpArray[i];
+		arpStep->isOn=0;
+		}
+
+	//now lets write some notes into our arp buffer.
+	for (int i=0;i < MAX_STEPS;i++)
+		{
+		step* myStep=stepArray[i];
+		if (myStep->isOn == 1)
+			{
+			baseNote=myStep->noteNumber;
+			tonality=myStep->noteTonality;
+			arpCounter=0;
+			}
+		else
+			{
+			//for now, lets just echo the notes an octave up into our arpArray
+			step* arpStep=arpArray[i];
+			arpStep->noteNumber=baseNote+getNextArpOffset(tonality);
+			//fprintf(stderr,"setting step %d to note %d\n",i,arpStep->noteNumber);
+			baseNote=arpStep->noteNumber;
+			arpStep->noteLength=1;
+			arpStep->isOn=1;
+			}
+		}
+	
+
+	
+	}
+
+int stepSequence::getNextArpOffset(int tonality)
+	{
+	//major - W W H W W W H W W H W W W H
+	//minor - W H W W W H W W H W W W H W
+	//default to an ping-pong octave thing
+	
+	int patternLength=3;
+	int defaultArray[] = {12,24,-12,-24};	
+	int arpOffset=defaultArray[arpCounter];
+
+	int majArray[] = {4,3,4,3,-14};
+        int minArray[] = {3,4,3,4,-14};
+	
+	if (tonality==1)
+		{
+		patternLength=4;
+		arpOffset=majArray[arpCounter];
+		
+		}
+	
+	else if (tonality == 2)
+		{
+		patternLength=4;
+		arpOffset=minArray[arpCounter];
+		
+		}
+	
+	arpCounter++;
+	if (arpCounter > patternLength)
+		{arpCounter=0;}
+	return arpOffset;
+	}
+
 
 stepPattern::stepPattern()
 	{
