@@ -1152,22 +1152,6 @@
                                     <string>global mute</string>
                                 </property>
                             </widget>
-                            <widget class="QLabel">
-                                <property name="name">
-                                    <cstring>statusline</cstring>
-                                </property>
-                                <property name="geometry">
-                                    <rect>
-                                        <x>10</x>
-                                        <y>60</y>
-                                        <width>550</width>
-                                        <height>31</height>
-                                    </rect>
-                                </property>
-                                <property name="text">
-                                    <string>Status</string>
-                                </property>
-                            </widget>
                             <widget class="QCheckBox">
                                 <property name="name">
                                     <cstring>arpOn</cstring>
@@ -1185,6 +1169,22 @@
                                 </property>
                                 <property name="accel">
                                     <string></string>
+                                </property>
+                            </widget>
+                            <widget class="QLabel">
+                                <property name="name">
+                                    <cstring>statusline</cstring>
+                                </property>
+                                <property name="geometry">
+                                    <rect>
+                                        <x>10</x>
+                                        <y>60</y>
+                                        <width>550</width>
+                                        <height>31</height>
+                                    </rect>
+                                </property>
+                                <property name="text">
+                                    <string>Status</string>
                                 </property>
                             </widget>
                         </widget>
@@ -1470,9 +1470,9 @@
     </connection>
     <connection>
         <sender>arpOn</sender>
-        <signal>stateChanged(int)</signal>
+        <signal>toggled(bool)</signal>
         <receiver>stepsequencerwidgetbase</receiver>
-        <slot>arpOn_stateChanged(int)</slot>
+        <slot>arpOn_stateChanged(bool)</slot>
     </connection>
 </connections>
 <slots>
@@ -1497,6 +1497,7 @@
     <slot>clearMutes_clicked()</slot>
     <slot>chainGroup_clicked(int)</slot>
     <slot>arpOn_stateChanged(int)</slot>
+    <slot>arpOn_stateChanged(bool)</slot>
 </slots>
 <layoutdefaults spacing="6" margin="11"/>
 </UI>

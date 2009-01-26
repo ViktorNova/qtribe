@@ -58,13 +58,15 @@ class stepSequence
 	step* arpArray[MAX_STEPS];
 	
 	int arpCounter;
+	int arp;
+	int arpLength;
 
 	public:
 		
 		int midiChannel;
 		int drumSequence;
 		int drumNote;
-		bool arp;
+		
 		
 		stepSequence();
 		~stepSequence();
@@ -90,6 +92,7 @@ class stepSequence
 		void arpeggiate();
 		void clearArp();
 		int getNextArpOffset(int);
+		int isArp();
 	};
 
 

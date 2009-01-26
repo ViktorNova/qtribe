@@ -67,7 +67,9 @@ stepSequence::stepSequence()
 	selectedStep=-1;
 	drumSequence=0;
 	drumNote=0;
-	arp=false;
+	
+	arp=0;
+	arpLength=0;
 	arpCounter=0;
 	
 	//fill our sequence with steps
@@ -169,8 +171,16 @@ void stepSequence::serialise(FILE* file)
 		}
 	}
 
+int stepSequence::isArp()
+	{
+	fprintf(stderr,"Returning isArp: %d\n",arp);
+	return arp;
+	}
+
 void stepSequence::clearArp()
 	{
+	fprintf(stderr,"Clearing arp\n");
+	arp=0;
 	for (int i=0;i < MAX_STEPS;i++)
 		{
 		step* arpStep=arpArray[i];
@@ -181,7 +191,7 @@ void stepSequence::clearArp()
 void stepSequence::arpeggiate()
 	{
 	//TODO: stub method for testing - this should take some arguments for tonality, note length, speed and direction.
-	
+	arp=1;
 	//for now lets just construct an ascending minor arpeggio on 16th notes
 	int baseNote=0;
 	int tonality=0;
@@ -200,17 +210,22 @@ void stepSequence::arpeggiate()
 			{
 			baseNote=myStep->noteNumber;
 			tonality=myStep->noteTonality;
+			arpLength=myStep->noteLength;
 			arpCounter=0;
 			}
 		else
 			{
-			//for now, lets just echo the notes an octave up into our arpArray
-			step* arpStep=arpArray[i];
-			arpStep->noteNumber=baseNote+getNextArpOffset(tonality);
-			//fprintf(stderr,"setting step %d to note %d\n",i,arpStep->noteNumber);
-			baseNote=arpStep->noteNumber;
-			arpStep->noteLength=1;
-			arpStep->isOn=1;
+			if (arpLength >0)
+				{
+				//for now, lets just echo the notes an octave up into our arpArray
+				step* arpStep=arpArray[i];
+				arpStep->noteNumber=baseNote+getNextArpOffset(tonality);
+				//fprintf(stderr,"setting step %d to note %d\n",i,arpStep->noteNumber);
+				baseNote=arpStep->noteNumber;
+				arpStep->noteLength=1;
+				arpStep->isOn=1;
+				arpLength--;
+				}
 			}
 		}
 	
