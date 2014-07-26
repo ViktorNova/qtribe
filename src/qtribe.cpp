@@ -22,8 +22,10 @@
 #include "qtribe.h"
 
 
-#include <qmainwindow.h>
+#include <q3mainwindow.h>
 #include <qdir.h>
+//Added by qt3to4:
+#include <QCloseEvent>
 
 #include "stepsequencerwidget.h"
 #include "jackIO.h"
@@ -33,7 +35,7 @@
 #endif
 
 qTribe::qTribe()
-    : QMainWindow( 0, appName, WDestructiveClose )
+    : Q3MainWindow( 0, appName, Qt::WDestructiveClose )
 	{
         //fprintf(stderr,"stepsequencer:stepsequencer()\n");
         
@@ -66,13 +68,13 @@ qTribe::qTribe()
 		{
 		//if our dotfile doesnt exist, we should create it.
 		QDir d(QDir::homeDirPath());
-		if (d.exists(".qtribe",FALSE))
+		if (!d.exists(".qtribe"))
 			{
 			//dotdir exists, just no file saved in it.
 			}
 		else
 			{
-			if (d.mkdir(".qtribe",FALSE))
+			if (!d.mkdir(".qtribe"))
 				{
 				fprintf(stdout,"Created ~/.qtribe\n");
 				}

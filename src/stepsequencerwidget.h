@@ -30,7 +30,7 @@ class stepsequencerWidget : public stepsequencerWidgetBase
     Q_OBJECT
     
 public:
-    stepsequencerWidget(QWidget* parent = 0, const char* name = 0, WFlags fl = 0 );
+    stepsequencerWidget(QWidget* parent = 0, const char* name = 0, Qt::WFlags fl = 0 );
     ~stepsequencerWidget();
     /*$PUBLIC_FUNCTIONS$*/
      

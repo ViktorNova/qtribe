@@ -20,7 +20,13 @@ CONFIG += release \
 	  thread \
           qt
 TARGET = ../bin/qtribe
-FORMS += stepsequencerwidgetbase.ui
+#The following line was changed from FORMS to FORMS3 by qt3to4
+FORMS3 += stepsequencerwidgetbase.ui
 
 LIBS += -ljack
+
+#The following line was inserted by qt3to4
+QT +=  qt3support 
+#The following line was inserted by qt3to4
+CONFIG += uic3
 

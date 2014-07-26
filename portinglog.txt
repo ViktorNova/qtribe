@@ -1,0 +1,26 @@
+Log for qt3to4 on Fri Jul 25 14:14:05 2014. Number of log entries: 21
+In file /home/n0va/Build/qtribe/src/qtribe.cpp at line 27 column 21: qmainwindow.h -> q3mainwindow.h
+In file /home/n0va/Build/qtribe/src/qtribe.cpp at line 38 column 17: QMainWindow -> Q3MainWindow
+In file /home/n0va/Build/qtribe/src/qtribe.cpp at line 38 column 48: WDestructiveClose -> Qt::WDestructiveClose
+In file /home/n0va/Build/qtribe/src/qtribe.cpp: Added the following include directives:
+	#include <QCloseEvent> 
+No changes made to file /home/n0va/Build/qtribe/src/main.cpp
+No changes made to file /home/n0va/Build/qtribe/src/jackIO.cpp
+No changes made to file /home/n0va/Build/qtribe/src/sequencerCore.cpp
+No changes made to file /home/n0va/Build/qtribe/src/stepSequence.cpp
+In file /home/n0va/Build/qtribe/src/stepsequencerwidget.cpp at line 25 column 22: qbuttongroup.h -> q3buttongroup.h
+In file /home/n0va/Build/qtribe/src/stepsequencerwidget.cpp at line 35 column 82: WFlags -> Qt::WFlags
+In file /home/n0va/Build/qtribe/src/qtribe.h at line 27 column 21: qmainwindow.h -> q3mainwindow.h
+In file /home/n0va/Build/qtribe/src/qtribe.h at line 30 column 15: QTextEdit -> Q3TextEdit
+In file /home/n0va/Build/qtribe/src/qtribe.h at line 32 column 32: QMainWindow -> Q3MainWindow
+In file /home/n0va/Build/qtribe/src/qtribe.h: Added the following include directives:
+	#include <QCloseEvent> 
+No changes made to file /home/n0va/Build/qtribe/src/jackIO.h
+No changes made to file /home/n0va/Build/qtribe/src/sequencerCore.h
+No changes made to file /home/n0va/Build/qtribe/src/stepSequence.h
+In file /home/n0va/Build/qtribe/src/stepsequencerwidget.h at line 33 column 73: WFlags -> Qt::WFlags
+In file src.pro: Added entry QT +=  qt3support 
+In file src.pro: Added entry CONFIG += uic3
+
+In file src.pro: Renamed FORMS to FORMS3
+
